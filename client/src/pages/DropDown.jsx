@@ -33,7 +33,7 @@ function DropdownMenu({ user }) {
     //     }
     // };
     const handleLogout = () => {
-        window.open(`http://localhost:3001/auth/logout`, "_self");
+        window.open(`${import.meta.env.VITE_SERVER_URL}/auth/logout`, "_self");
     };
     return (
         <motion.div

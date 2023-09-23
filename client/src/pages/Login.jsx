@@ -1,9 +1,8 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 export default function Login() {
     const googleAuth = () => {
-        window.open(`http://localhost:3001/auth/google`, "_self");
+        window.open(`${import.meta.env.VITE_SERVER_URL}/auth/google`, "_self");
     };
 
     return (
