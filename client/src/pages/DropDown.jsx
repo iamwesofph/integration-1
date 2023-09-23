@@ -21,6 +21,7 @@ export default function DropDown({ user }) {
 }
 
 function DropdownMenu({ user }) {
+    // TODO: understand why this doesnt work instead of the window.open method + try POST if its better than GET for logouts.
     // const handleLogout = async () => {
     //     try {
     //         // Replace "backend-url" with the actual URL of your backend server

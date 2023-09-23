@@ -1,12 +1,9 @@
-require("dotenv").config();
-// console.log("")
-
 const express = require("express");
 const passport = require("passport");
 const FacebookStrategy = require("passport-facebook");
-// const GoogleStrategy = require("passport-google-oidc");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const UserService = require("../user/");
+const User = require("../models/user");
+const config = require("../utils/config");
 
 const router = express.Router();
 
@@ -71,59 +68,44 @@ passport.use(
             //         : "/auth/google/callback",
             // scope: ["profile", "email"],
             // callbackURL: process.env.CALLBACK_URL,
-            callbackURL: "/auth/google/callback",
-            clientID: process.env.CLIENT_ID,
-            clientSecret: process.env.CLIENT_SECRET,
+            callbackURL: config.GOOGLE_CALLBACK_URL,
+            clientID: config.GOOGLE_CLIENT_ID,
+            clientSecret: config.GOOGLE_CLIENT_SECRET,
         },
         async (accessToken, refreshToken, profile, done) => {
             // console.log(`INSIDE GOOGLESTRATEGY ${JSON.stringify(profile)}`);
-            const id = profile.id;
-            const email = profile.emails[0].value;
-            const firstName = profile.name.givenName;
-            const lastName = profile.name.familyName;
-            const profilePhoto = profile.photos[0].value;
-            const source = "google";
+            try {
+                const id = profile.id;
+                const email = profile.emails[0].value;
+                const firstName = profile.name.givenName;
+                const lastName = profile.name.familyName;
+                const profilePhoto = profile.photos[0].value;
 
-            const currentUser = await UserService.getUserByEmail({ email });
+                const currentUser = await User.findOne({ email });
 
-            if (!currentUser) {
-                // const user = new User({
-                //     id,
-                //     email,
-                //     firstName,
-                //     lastName,
-                //     profilePhoto,
-                //     source: "google",
-                // });
-                // return user.save();
-                const newUser = await UserService.addGoogleUser({
-                    id,
-                    email,
-                    firstName,
-                    lastName,
-                    profilePhoto,
-                });
-                return done(null, newUser);
+                if (!currentUser) {
+                    const newUser = new User({
+                        id,
+                        email,
+                        firstName,
+                        lastName,
+                        profilePhoto,
+                        source: "google",
+                    });
+
+                    await newUser.save();
+                    return done(null, newUser);
+                }
+
+                if (currentUser.source != "google") {
+                    return done(null, false, { message: `We were unable to log you in with that login method. Log in with the current social provider linked to your account, either Google or GitHub.` });
+                }
+
+                currentUser.lastVisited = new Date();
+                return done(null, currentUser);
+            } catch (error) {
+                return done(error);
             }
-
-            // if (!currentUser) {
-            //     const newUser = await UserService.addGoogleUser({
-            //         id,
-            //         email,
-            //         firstName,
-            //         lastName,
-            //         profilePhoto,
-            //     });
-            //     return done(null, newUser);
-            // }
-
-            if (currentUser.source != "google") {
-                //return error
-                return done(null, false, { message: `We were unable to log you in with that login method. Log in with the current social provider linked to your account, either Google or GitHub.` });
-            }
-
-            currentUser.lastVisited = new Date();
-            return done(null, currentUser);
         }
     )
 );
@@ -148,11 +130,6 @@ router.get("/auth/login/success", function (req, res) {
     }
 });
 
-router.get("/signup", function (req, res, next) {
-    console.log("ALERT");
-    alert("");
-});
-
 // Login button redirects to this route
 router.get(
     "/auth/google",
@@ -166,7 +143,7 @@ router.get(
     "/auth/google/callback",
     passport.authenticate("google", {
         failureRedirect: "/",
-        successRedirect: "http://localhost:5173/",
+        successRedirect: config.FRONTEND_URL,
         // failureFlash: true,
         // successFlash: "Successfully logged in!",
     })
@@ -178,7 +155,7 @@ router.get("/auth/logout", (req, res) => {
             console.error("Error destroying session:", err);
         }
     });
-    res.redirect("http://localhost:5173/");
+    res.redirect(config.FRONTEND_URL);
 });
 
 module.exports = router;

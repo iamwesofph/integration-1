@@ -36,7 +36,7 @@ connectToMongoDB();
 
 app.use(
     cors({
-        origin: "http://localhost:5173",
+        origin: config.FRONTEND_URL,
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
     })
@@ -57,7 +57,7 @@ app.use(
         secret: "secr3t",
         resave: false,
         saveUninitialized: false,
-        store: MongoStore.create({ mongoUrl: "mongodb+srv://wes:wes21@cluster0.ai8ufze.mongodb.net/sessionsDB?retryWrites=true&w=majority" }),
+        store: MongoStore.create({ mongoUrl: config.SESSIONSDB_URI }),
     })
 );
 
