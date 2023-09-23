@@ -10,7 +10,6 @@ const cors = require("cors");
 const anecdotesRouter = require("./controllers/anecdotes");
 const authRouter = require("./controllers/auth");
 const middleware = require("./utils/middleware");
-// const logger = require("./utils/logger");
 const winstonLogger = require("./utils/winstonLogger");
 
 const mongoose = require("mongoose");
@@ -35,7 +34,6 @@ const connectToMongoDB = async () => {
 };
 connectToMongoDB();
 
-// app.use(cors());
 app.use(
     cors({
         origin: "http://localhost:5173",
@@ -50,20 +48,9 @@ app.use((req, res, next) => {
     next();
 });
 
-// app.use(express.static("dist"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-//Add session support
-// app.use(
-//     session({
-//         secret: "x kitten",
-//         resave: false,
-//         saveUninitialized: false,
-//         store: MongoStore.create({ mongoUrl: config.MONGODB_URI }),
-//     })
-// );
 
 app.use(
     session({
@@ -82,7 +69,6 @@ app.use(passport.session());
 app.use("/", authRouter);
 app.use("/", anecdotesRouter);
 
-// app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
 module.exports = app;

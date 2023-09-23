@@ -73,7 +73,7 @@ function App() {
                 <Route path="anecdotes/:id" element={<AnecdoteDetails anecdotes={anecdotes} />} />
                 <Route path="create" element={<CreateNew setNotification={setNotification} anecdotes={anecdotes} setAnecdotes={setAnecdotes} />} />
                 <Route path="about" element={<About />}></Route>
-                {/* <Route path="*" element={<NotFound />} /> */}
+                <Route path="*" element={<NotFound />} />
             </Route>
         )
     );
