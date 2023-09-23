@@ -8,6 +8,7 @@ import CreateNew from "./pages/CreateNew";
 import Login from "./pages/Login";
 import anecdoteService from "./services/anecdotes";
 import axios from "axios";
+axios.defaults.withCredentials = true;
 
 const About = () => (
     <div>

@@ -1,3 +1,58 @@
+GET https://integration-api-6cas.onrender.com/auth/login/success
+Accept: application/json, text/plain, */*
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Cookie: connect.sid=s%3APjZZVGhHrYWjt_aPOQgji2B86K-0nxWU.si4sgfLaaHYMezrY5qsZbhMabiLV6nNYVwJQjv9D5WI
+Origin: https://integration-react.onrender.com
+Referer: https://integration-react.onrender.com/
+Sec-Ch-Ua: "Brave";v="117", "Not;A=Brand";v="8", "Chromium";v="117"
+Sec-Ch-Ua-Mobile: ?0
+Sec-Ch-Ua-Platform: "Windows"
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: cross-site
+Sec-Gpc: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36
+
+###
+GET http://localhost:3001/auth/login/success
+Accept: application/json, text/plain, */*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+Connection: keep-alive
+Cookie: connect.sid=s%3APjZZVGhHrYWjt_aPOQgji2B86K-0nxWU.si4sgfLaaHYMezrY5qsZbhMabiLV6nNYVwJQjv9D5WI
+Host: localhost:3001
+Origin: http://localhost:5173
+Referer: http://localhost:5173/
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-site
+Sec-GPC: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36
+sec-ch-ua: "Brave";v="117", "Not;A=Brand";v="8", "Chromium";v="117"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Windows"
+
+###
+GET /auth/login/success HTTP/1.1
+Accept: application/json, text/plain, */*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+Connection: keep-alive
+Cookie: connect.sid=s%3AVtdU-hV9Gy0O1Z7S25zhI_w6ds1Ec1HD.imSibpDmxwfOU%2FJDO17SrTkB5uES%2FVKZl2uB5TsAhw8
+Host: localhost:3001
+Origin: http://localhost:5173
+Referer: http://localhost:5173/
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: same-site
+Sec-GPC: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36
+sec-ch-ua: "Brave";v="117", "Not;A=Brand";v="8", "Chromium";v="117"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Windows"
+
+###
 GET http://localhost:3001/api/anecdotes/
 
 ###
