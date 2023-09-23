@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://localhost:3001/api/anecdotes";
+const baseUrl = `${import.meta.env.VITE_SERVER_URL}/api/anecdotes`;
 
 const getAll = async () => {
     try {
