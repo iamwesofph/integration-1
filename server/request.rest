@@ -1,0 +1,55 @@
+GET http://localhost:3001/api/anecdotes/
+
+###
+POST http://localhost:3001/api/anecdotes/
+content-type: application/json
+
+{
+    "content": "If it hurts, do it more often",
+    "author": "Jez Humble",
+    "info": "https://martinfowler.com/bliki/FrequencyReducesDifficulty.html",
+    "votes": 21
+}
+
+###
+POST http://localhost:3001/api/anecdotes/
+content-type: application/json
+
+{
+    "content": "Premature optimization is the root of all evil",
+    "author": "Donald Knuth",
+    "info": "http://wiki.c2.com/?PrematureOptimization",
+    "votes": 1
+}
+
+###
+POST http://localhost:3001/api/anecdotes/
+content-type: application/json
+
+{
+    "content": "a",
+    "author": "b",
+    "info": "c",
+    "votes": 1
+}
+
+# ###
+# GET http://localhost:3001/info/
+
+# ###
+# GET  http://localhost:3001/api/persons/1
+
+# ###
+# GET  http://localhost:3001/api/persons/64d63c45e3583a8cc2dd1ba8
+
+# ###
+# DELETE http://localhost:3001/api/persons/64d63c1eb5a442d2a637326f
+
+# ###
+# PUT http://localhost:3001/api/persons/64d63c45e3583a8cc2dd1ba8
+# content-type: application/json
+
+# {
+#     "name":"Arto Hellas",
+#     "number": 218
+# }
