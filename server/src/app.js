@@ -34,25 +34,9 @@ const connectToMongoDB = async () => {
 };
 connectToMongoDB();
 
-// app.use(
-//     cors({
-//         origin: config.FRONTEND_URL,
-//         methods: "GET,POST,PUT,DELETE",
-//         credentials: true,
-//     })
-// );
-
-// Allow requests from your frontend origin
-const allowedOrigins = ["https://integration-react.onrender.com"];
 app.use(
     cors({
-        origin: (origin, callback) => {
-            if (allowedOrigins.includes(origin)) {
-                callback(null, true);
-            } else {
-                callback(new Error("Not allowed by CORS"));
-            }
-        },
+        origin: config.FRONTEND_URL,
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
     })
