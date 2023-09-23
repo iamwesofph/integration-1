@@ -39,6 +39,10 @@ app.use(
         origin: config.FRONTEND_URL,
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
+        optionSuccessStatus: 200,
+        Headers: true,
+        exposedHeaders: "Set-Cookie",
+        allowedHeaders: ["Access-Control-Allow-Origin", "Content-Type", "Authorization"],
     })
 );
 
