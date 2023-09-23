@@ -180,12 +180,5 @@ router.get("/auth/logout", (req, res) => {
     });
     res.redirect("http://localhost:5173/");
 });
-// router.get("/auth/logout", (req, res) => {
-//     req.flash("success", "Successfully logged out");
-//     req.session.destroy(function () {
-//         res.clearCookie("connect.sid");
-//         res.redirect("/");
-//     });
-// });
 
 module.exports = router;
