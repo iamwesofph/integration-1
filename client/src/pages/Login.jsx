@@ -2,7 +2,8 @@ import React from "react";
 
 export default function Login() {
     const googleAuth = () => {
-        window.open(`${import.meta.env.VITE_SERVER_URL}/auth/google`, "_self");
+        // window.open(`${import.meta.env.VITE_SERVER_URL}/auth/google`, "_self");
+        window.open(`/auth/google`, "_self");
     };
 
     return (

@@ -29,7 +29,8 @@ function App() {
     useEffect(() => {
         const getUser = async () => {
             try {
-                const url = `${import.meta.env.VITE_SERVER_URL}/auth/login/success`;
+                // const url = `${import.meta.env.VITE_SERVER_URL}/auth/login/success`;
+                const url = `/auth/login/success`;
                 const { data } = await axios.get(url, { withCredentials: true });
                 console.log(data.user);
                 setUser(data.user);
