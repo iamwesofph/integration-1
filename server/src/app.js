@@ -46,6 +46,9 @@ app.use(
     })
 );
 
+// app.set("views", path.join(__dirname, "views"));
+app.use(express.static("dist"));
+
 // app.use(middleware.requestLogger);
 app.use((req, res, next) => {
     winstonLogger.info(`Received ${req.method} request for ${req.url}`);
