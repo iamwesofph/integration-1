@@ -33,7 +33,8 @@ function DropdownMenu({ user }) {
     //     }
     // };
     const handleLogout = () => {
-        window.open(`${import.meta.env.VITE_SERVER_URL}/auth/logout`, "_self");
+        // window.open(`${import.meta.env.VITE_SERVER_URL}/auth/logout`, "_self");
+        window.open("/auth/logout", "_self");
     };
     return (
         <motion.div
