@@ -131,7 +131,42 @@ passport.use(
         },
         async (accessToken, refreshToken, profile, done) => {
             console.log(`INSIDE GITHUB STRATEGY ${JSON.stringify(profile)}`);
-            return done(null, profile);
+            try {
+                const providerId = profile.id;
+                const displayName = profile.displayName;
+                const email = profile.emails[0].value;
+                const profilePhoto = profile.photos[0].value;
+                console.log(`PROVIDER ID: ${providerId}`);
+                console.log(`EMAIL: ${email}`);
+                console.log(`PROFILE PHOTO: ${profilePhoto}`);
+
+                const currentUser = await User.findOne({ email });
+
+                if (!currentUser) {
+                    console.log("User email not found on users DB");
+                    const newUser = new User({
+                        providerId,
+                        displayName,
+                        email,
+                        profilePhoto,
+                        source: "github",
+                    });
+
+                    await newUser.save();
+                    return done(null, newUser);
+                }
+
+                if (currentUser.source != "github") {
+                    console.log("User email found using another provider");
+                    return done(null, false, { message: `We were unable to log you in with that login method. Log in with the current social provider linked to your account, either Google or GitHub.` });
+                }
+
+                currentUser.lastVisited = new Date();
+                console.log("FOUND");
+                return done(null, currentUser);
+            } catch (error) {
+                return done(error);
+            }
         }
     )
 );
@@ -183,7 +218,7 @@ router.get("/auth/facebook", passport.authenticate("facebook"));
 router.get(
     "/auth/facebook/callback",
     passport.authenticate("facebook", {
-        failureRedirect: "/",
+        failureRedirect: "http://localhost:9999",
         successRedirect: config.FRONTEND_URL,
         // failureFlash: true,
         // successFlash: "Successfully logged in!",
@@ -195,7 +230,7 @@ router.get("/auth/github", passport.authenticate("github", { scope: ["user:email
 router.get(
     "/auth/github/callback",
     passport.authenticate("github", {
-        failureRedirect: "/",
+        failureRedirect: "http://localhost:9999",
         successRedirect: config.FRONTEND_URL,
         // failureFlash: true,
         // successFlash: "Successfully logged in!",

@@ -3,7 +3,7 @@ let mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
     providerId: {
         type: String,
-        // default: null,
+        default: null,
     },
     email: {
         type: String,

@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 const AnecdoteList = ({ anecdotes }) => {
     return (
         <div>
-            <h2 className="text-4xl mb-8">Anecdotes</h2>
+            <h2 className="text-2xl mb-8">Anecdotes</h2>
             <ul>
                 {anecdotes.map((anecdote) => (
                     <li key={anecdote.id} className="mb-6">

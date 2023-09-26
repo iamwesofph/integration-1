@@ -46,11 +46,9 @@ function DropdownMenu({ user }) {
             transition={{ duration: 0.2, ease: "easeIn" }}
         >
             <div className="flex flex-col items-center gap-6 py-6">
-                <div>
-                    <img className="rounded-full w-14 border border-white" src={user.profilePhoto} alt="profile photo" referrerPolicy="no-referrer" />
-                </div>
+                <div>{user.profilePhoto ? <img className="rounded-full w-14 border border-white" src={user.profilePhoto} alt="profile photo" referrerPolicy="no-referrer" /> : <CogIcon className="w-6 h-6 fill-current m-3" />}</div>
                 <div className="flex flex-col items-center justify-center">
-                    <h3 className="text-lg font-bold">{user.firstName || user.displayName}</h3>
+                    <span className="text-lg font-bold">{user.firstName || user.displayName}</span>
                     <h3 className="text-xs">{user.email}</h3>
                 </div>
                 <div>

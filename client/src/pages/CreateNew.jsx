@@ -36,7 +36,7 @@ function CreateNew({ setNotification, anecdotes, setAnecdotes }) {
 
     return (
         <div>
-            <h2 className="text-4xl mb-8">Create a new anecdote</h2>
+            <h2 className="text-2xl mb-8">Create a new anecdote</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label className="block  text-sm font-bold mb-2" htmlFor="content">
@@ -56,10 +56,10 @@ function CreateNew({ setNotification, anecdotes, setAnecdotes }) {
                     </label>
                     <input className="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" {...info} reset="" />
                 </div>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outlin mr-2" type="submit">
+                <button className="bg-cyan-400 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outlin mr-2" type="submit">
                     Create
                 </button>
-                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2" type="button" onClick={resetAll}>
+                <button className="bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2" type="button" onClick={resetAll}>
                     Reset
                 </button>
             </form>
