@@ -7,18 +7,18 @@ export default function RootLayout({ notification, user }) {
     const isUserLoaded = user && user.firstName && user.profilePhoto;
 
     return (
-        <div className="flex flex-col p-6 h-screen bg-slate-600 text-white">
+        <div className="flex flex-col h-screen bg-slate-600 text-white">
             <header>
-                <nav className="flex justify-between items-center">
+                <nav className="flex justify-between items-center p-6 bg-gray-800 h-20 specific text-lg">
                     <div></div>
-                    <div className="flex justify-center gap-10 uppercase text-lg specific">
-                        <NavLink className="text-cyan-400 bg-gray-800 hover:underline rounded-md px-4 py-2" to="/">
+                    <div className="flex justify-center items-center gap-10">
+                        <NavLink className="text-cyan-400 bg-gray-800 hover:underline rounded-md px-4 py-1 uppercase" to="/">
                             anecdotes
                         </NavLink>
-                        <NavLink className="text-cyan-400 bg-gray-800 hover:underline rounded-md px-4 py-2 whitespace-nowrap" to="/create">
+                        <NavLink className="text-cyan-400 bg-gray-800 hover:underline rounded-md px-4 py-1 whitespace-nowrap uppercase" to="/create">
                             create new
                         </NavLink>
-                        <NavLink className="text-cyan-400 bg-gray-800 hover:underline rounded-md px-4 py-2" to="/about">
+                        <NavLink className="text-cyan-400 bg-gray-800 hover:underline rounded-md px-4 py-1 uppercase" to="/about">
                             about
                         </NavLink>
                     </div>
@@ -26,7 +26,7 @@ export default function RootLayout({ notification, user }) {
                         {isUserLoaded ? (
                             <DropDown user={user}></DropDown>
                         ) : (
-                            <NavLink className="text-cyan-400 bg-gray-800 hover:underline rounded-md px-4 py-2 uppercase" to="/login">
+                            <NavLink className="text-cyan-400 bg-gray-800 hover:underline rounded-md px-4 py-1 uppercase" to="/login">
                                 Login
                             </NavLink>
                         )}

@@ -11,8 +11,8 @@ export default function DropDown({ user }) {
 
     return (
         <>
-            <button className="flex justify-center items-center bg-slate-700 border border-cyan-400 rounded-3xl px-4 py-2 hover:bg-slate-900 transition-colors duration-300 whitespace-nowrap" onClick={() => setOpen(!open)}>
-                <span className="mr-1">{user.firstName}</span>
+            <button className="flex justify-center items-center bg-slate-700 border border-cyan-400 rounded-3xl px-4 py-2 text-sm hover:bg-slate-900 transition-colors duration-300 whitespace-nowrap" onClick={() => setOpen(!open)}>
+                <span className="mr-1">{user.firstName || user.displayName}</span>
                 <DropDownCaret />
             </button>
             <AnimatePresence>{open && <DropdownMenu user={user} />}</AnimatePresence>
@@ -36,9 +36,10 @@ function DropdownMenu({ user }) {
         // window.open(`${import.meta.env.VITE_SERVER_URL}/auth/logout`, "_self");
         window.open("/auth/logout", "_self");
     };
+
     return (
         <motion.div
-            className="h-auto w-72 absolute right-0 flex flex-col border border-cyan-400 bg-gray-800 rounded-lg"
+            className="h-auto w-72 absolute right-0 flex flex-col border border-cyan-400 bg-gray-800 rounded-lg text-sm"
             initial={{ opacity: 0, scale: 0.3, x: 50, y: -150 }}
             animate={{ opacity: 1, scale: 1, x: -22, y: 20 }}
             exit={{ opacity: 0, scale: 0.3, x: 50, y: -150 }} // Define the exit animation
@@ -49,7 +50,7 @@ function DropdownMenu({ user }) {
                     <img className="rounded-full w-14 border border-white" src={user.profilePhoto} alt="profile photo" referrerPolicy="no-referrer" />
                 </div>
                 <div className="flex flex-col items-center justify-center">
-                    <h3 className="text-lg font-bold">{`${user.firstName} ${user.lastName}`}</h3>
+                    <h3 className="text-lg font-bold">{user.firstName || user.displayName}</h3>
                     <h3 className="text-xs">{user.email}</h3>
                 </div>
                 <div>

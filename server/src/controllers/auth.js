@@ -2,60 +2,72 @@ const express = require("express");
 const passport = require("passport");
 const FacebookStrategy = require("passport-facebook");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const GitHubStrategy = require("passport-github2");
 const User = require("../models/user");
 const config = require("../utils/config");
 
 const router = express.Router();
 
-// passport.use(
-//     new FacebookStrategy(
-//         {
-//             clientID: process.env["FACEBOOK_CLIENT_ID"],
-//             clientSecret: process.env["FACEBOOK_CLIENT_SECRET"],
-//             callbackURL:
-//                 process.env.NODE_ENV === "production" // Need to specify complete URL for production to work because redirect URI is checked by facebook and google.
-//                     ? "https://google-facebook-authentication.onrender.com/oauth2/redirect/facebook"
-//                     : "/oauth2/redirect/facebook",
-//             state: true,
-//         },
-//         function verify(accessToken, refreshToken, profile, cb) {
-//             db.get("SELECT * FROM federated_credentials WHERE provider = ? AND subject = ?", ["https://www.facebook.com", profile.id], function (err, row) {
-//                 if (err) {
-//                     return cb(err);
-//                 }
-//                 if (!row) {
-//                     db.run("INSERT INTO users (name) VALUES (?)", [profile.displayName], function (err) {
-//                         if (err) {
-//                             return cb(err);
-//                         }
+passport.use(
+    new FacebookStrategy(
+        {
+            callbackURL: config.FACEBOOK_CALLBACK_URL,
+            clientID: config.FACEBOOK_CLIENT_ID,
+            clientSecret: config.FACEBOOK_CLIENT_SECRET,
+            state: true, // Enable the state parameter for CSRF protection
+            // scope: ["public_profile"],
+            profileFields: ["id", "displayName", "emails", "photos", "first_name", "last_name", "middle_name", "name_format"],
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            // console.log(`INSIDE FACEBOOK ${JSON.stringify(profile)}`);
+            console.log(profile.id);
+            // console.log(profile.displayName);
+            // console.log(profile.picture);
+            // console.log(profile.first_name);
+            // console.log(profile.last_name);
+            // console.log(profile.emails[0].value);
+            console.log(profile._json);
 
-//                         var id = this.lastID;
-//                         db.run("INSERT INTO federated_credentials (user_id, provider, subject) VALUES (?, ?, ?)", [id, "https://www.facebook.com", profile.id], function (err) {
-//                             if (err) {
-//                                 return cb(err);
-//                             }
-//                             var user = {
-//                                 id: id,
-//                                 name: profile.displayName,
-//                             };
-//                             return cb(null, user);
-//                         });
-//                     });
-//                 } else {
-//                     db.get("SELECT * FROM users WHERE id = ?", [row.user_id], function (err, row) {
-//                         if (err) {
-//                             return cb(err);
-//                         }
-//                         if (!row) {
-//                             return cb(null, false);
-//                         }
-//                         return cb(null, row);
-//                     });
-//                 }
-//             });
-//         }
-//     )
-// );
+            try {
+                const providerId = profile.id;
+                const email = profile.emails[0].value;
+                const displayName = profile.displayName;
+                const profilePhoto = profile.photos[0].value;
+                const firstName = profile.name.givenName;
+                const lastName = profile.name.familyName;
+                const currentUser = await User.findOne({ email: email });
+                console.log(`CURRENT USER: ${currentUser}`);
+                console.log(`PROFILE ID: ${profile.id}`);
+                console.log(`PROVIDER ID: ${providerId}`);
+
+                if (!currentUser) {
+                    console.log("No CURRENT USER");
+                    const newUser = new User({
+                        providerId,
+                        email,
+                        displayName,
+                        firstName,
+                        lastName,
+                        profilePhoto,
+                        source: "facebook",
+                    });
+
+                    await newUser.save();
+                    return done(null, newUser);
+                }
+
+                if (currentUser.source != "facebook") {
+                    return done(null, false, { message: `We were unable to log you in with that login method. Log in with the current social provider linked to your account, either Google or GitHub.` });
+                }
+
+                currentUser.lastVisited = new Date();
+                return done(null, currentUser);
+            } catch (error) {
+                return done(error);
+            }
+        }
+    )
+);
 
 passport.use(
     new GoogleStrategy(
@@ -73,9 +85,9 @@ passport.use(
             clientSecret: config.GOOGLE_CLIENT_SECRET,
         },
         async (accessToken, refreshToken, profile, done) => {
-            // console.log(`INSIDE GOOGLESTRATEGY ${JSON.stringify(profile)}`);
+            console.log(`INSIDE GOOGLESTRATEGY ${JSON.stringify(profile)}`);
             try {
-                const id = profile.id;
+                const providerId = profile.id;
                 const email = profile.emails[0].value;
                 const firstName = profile.name.givenName;
                 const lastName = profile.name.familyName;
@@ -85,7 +97,7 @@ passport.use(
 
                 if (!currentUser) {
                     const newUser = new User({
-                        id,
+                        providerId,
                         email,
                         firstName,
                         lastName,
@@ -106,6 +118,20 @@ passport.use(
             } catch (error) {
                 return done(error);
             }
+        }
+    )
+);
+
+passport.use(
+    new GitHubStrategy(
+        {
+            clientID: config.GITHUB_CLIENT_ID,
+            clientSecret: config.GITHUB_CLIENT_SECRET,
+            callbackURL: config.GITHUB_CALLBACK_URL,
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            console.log(`INSIDE GITHUB STRATEGY ${JSON.stringify(profile)}`);
+            return done(null, profile);
         }
     )
 );
@@ -142,6 +168,33 @@ router.get(
 router.get(
     "/auth/google/callback",
     passport.authenticate("google", {
+        failureRedirect: "/",
+        successRedirect: config.FRONTEND_URL,
+        // failureFlash: true,
+        // successFlash: "Successfully logged in!",
+    })
+);
+
+// Login button redirects to this route
+// router.get("/auth/facebook", passport.authenticate("facebook", { scope: ["public_profile"] }));
+router.get("/auth/facebook", passport.authenticate("facebook"));
+
+// Google redirects to this route
+router.get(
+    "/auth/facebook/callback",
+    passport.authenticate("facebook", {
+        failureRedirect: "/",
+        successRedirect: config.FRONTEND_URL,
+        // failureFlash: true,
+        // successFlash: "Successfully logged in!",
+    })
+);
+
+router.get("/auth/github", passport.authenticate("github", { scope: ["user:email"] }));
+
+router.get(
+    "/auth/github/callback",
+    passport.authenticate("github", {
         failureRedirect: "/",
         successRedirect: config.FRONTEND_URL,
         // failureFlash: true,

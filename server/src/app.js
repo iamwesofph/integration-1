@@ -47,7 +47,7 @@ app.use(
 );
 
 // app.set("views", path.join(__dirname, "views"));
-app.use(express.static("dist"));
+// app.use(express.static("dist"));
 
 // app.use(middleware.requestLogger);
 app.use((req, res, next) => {

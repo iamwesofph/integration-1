@@ -1,9 +1,14 @@
 const Footer = () => (
-    <div className="bg-gray-800 text-white p-4 text-center">
-        Created by: Wes Q.
-        <a className="text-cyan-400 underline" href="https://github.com/iamwesofph/integration-1">
-            https://github.com/iamwesofph/integration-1
-        </a>
+    <div className="flex flex-col justify-center items-center bg-gray-800 p-4 text-center h-20">
+        <div>
+            <span className="text-xs">Created by: Wes Q.</span>
+        </div>
+        <div>
+            <span>Source code: </span>
+            <a className="text-cyan-400 underline" href="https://github.com/iamwesofph/integration-1">
+                https://github.com/iamwesofph/integration-1
+            </a>
+        </div>
     </div>
 );
 

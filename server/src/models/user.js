@@ -1,15 +1,16 @@
 let mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    id: {
+    providerId: {
         type: String,
-        default: null,
+        // default: null,
     },
     email: {
         type: String,
         required: [true, "email required"],
         unique: [true, "email already registered"],
     },
+    displayName: String,
     firstName: String,
     lastName: String,
     profilePhoto: String,
