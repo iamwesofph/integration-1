@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
         required: [true, "email required"],
         unique: [true, "email already registered"],
     },
+    userName: {
+        type: String,
+        unique: [true, "username is already taken"],
+    },
     displayName: String,
     firstName: String,
     lastName: String,

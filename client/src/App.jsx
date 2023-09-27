@@ -23,18 +23,24 @@ function App() {
                 // const url = `${import.meta.env.VITE_SERVER_URL}/auth/login/success`;
                 const url = `/auth/login/success`;
                 const { data } = await axios.get(url, { withCredentials: true });
-                console.log("USEFFECT LOG");
                 console.log(data.user);
                 setUser(data.user);
             } catch (err) {
-                console.log("USEFFECT ERROR");
                 // if there is no user found, or if there is duplicate record with another provider it will catch error
                 console.log(err);
-                console.log(err.response.data.message[0]);
-                setNotification({ message: err.response.data.message[0], type: "error" });
-                setTimeout(() => {
-                    setNotification(null);
-                }, 5000);
+
+                if (err.response.data.message) {
+                    // if (err.response.data.message && Array.isArray(err.response.data.message) && err.response.data.message.length > 0) {
+                    setNotification({ message: err.response.data.message[0], type: "error" });
+                    setTimeout(() => {
+                        setNotification(null);
+                    }, 5000);
+                } else {
+                    setNotification({ message: "Hello! Login to gain complete access", type: "success" });
+                    setTimeout(() => {
+                        setNotification(null);
+                    }, 5000);
+                }
             }
         };
         getUser();
@@ -68,7 +74,7 @@ function App() {
     const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path="/" element={<RootLayout notification={notification} user={user} />}>
-                <Route path="login" element={<Login />}></Route>
+                <Route path="login" element={<Login setNotification={setNotification} />}></Route>
                 <Route index element={<AnecdoteList anecdotes={anecdotes} />} />
                 <Route path="anecdotes" element={<AnecdoteList anecdotes={anecdotes} />} />
                 <Route path="anecdotes/:id" element={<AnecdoteDetails anecdotes={anecdotes} />} />
