@@ -27,7 +27,7 @@ function CreateNew({ setNotification, anecdotes, setAnecdotes }) {
         // console.log(`RETURNED ANEC: ${JSON.stringify(returnedAnecdote)}`);
         setAnecdotes(anecdotes.concat(returnedAnecdote));
 
-        setNotification(`Successfully added an anecdote: ${newAnecdote.content} by ${newAnecdote.author}!`);
+        setNotification({ message: `Successfully added an anecdote: ${newAnecdote.content} by ${newAnecdote.author}!`, type: "success" });
         setTimeout(() => {
             setNotification(null);
         }, 5000);

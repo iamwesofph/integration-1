@@ -5,7 +5,7 @@ const Footer = () => (
         </div>
         <div>
             <span>Source code: </span>
-            <a className="text-cyan-400 underline" href="https://github.com/iamwesofph/integration-1">
+            <a className="text-cyan-400 underline" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">
                 https://github.com/iamwesofph/integration-1
             </a>
         </div>

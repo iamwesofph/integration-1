@@ -4,7 +4,6 @@ const app = express();
 
 //TODO try removing these 2 later
 const bodyParser = require("body-parser");
-// const flash = require("express-flash");
 
 const cors = require("cors");
 const anecdotesRouter = require("./controllers/anecdotes");
@@ -58,7 +57,6 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
 app.use(
     session({
         secret: "secr3t",

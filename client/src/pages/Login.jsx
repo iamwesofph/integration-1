@@ -19,39 +19,37 @@ export default function Login() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-full">
-            <section className="w-[400px] p-6 text-black bg-white border border-gray-300 rounded-lg">
-                <h1 className="mb-2">Login</h1>
-                <hr />
-                <button className="flex justify-center items-center w-full text-center bg-white text-gray-600 text-lg font-semibold h-14 border border-gray-600 rounded-lg mb-4 hover:shadow-xl hover:scale-105" onClick={googleAuth}>
-                    <div className="flex justify-center items-center mr-2 w-10 h-10 min-w-10 min-h-10">
-                        <GoogleLogo />
-                    </div>
-                    <span>Google</span>
-                </button>
+        <section className="w-auto sm:w-[400px] p-6 text-black bg-white border border-gray-300 rounded-lg mx-auto">
+            <h1 className="mb-2">Login</h1>
+            <hr />
+            <button className="flex justify-center items-center w-full text-center bg-white text-gray-600 text-lg font-semibold h-14 border border-gray-600 rounded-lg mb-4 hover:shadow-xl hover:scale-105" onClick={googleAuth}>
+                <div className="flex justify-center items-center mr-2 w-10 h-10 min-w-10 min-h-10">
+                    <GoogleLogo />
+                </div>
+                <span>Google</span>
+            </button>
 
-                <button className="flex justify-center items-center w-full text-center bg-white text-gray-600 text-lg font-semibold h-14 border border-gray-600 rounded-lg mb-4 hover:shadow-xl hover:scale-105" onClick={facebookAuth}>
-                    <div className="flex justify-center items-center mr-2 w-10 h-10 min-w-10 min-h-10">
-                        <FacebookLogo />
-                    </div>
-                    <span>Facebook</span>
-                </button>
+            <button className="flex justify-center items-center w-full text-center bg-white text-gray-600 text-lg font-semibold h-14 border border-gray-600 rounded-lg mb-4 hover:shadow-xl hover:scale-105" onClick={facebookAuth}>
+                <div className="flex justify-center items-center mr-2 w-10 h-10 min-w-10 min-h-10">
+                    <FacebookLogo />
+                </div>
+                <span>Facebook</span>
+            </button>
 
-                <button className="flex justify-center items-center w-full text-center bg-white text-gray-600 text-lg font-semibold h-14 border border-gray-600 rounded-lg mb-4 hover:shadow-xl hover:scale-105" onClick={githubAuth}>
-                    <div className="flex justify-center items-center mr-2 w-10 h-10 min-w-10 min-h-10">
-                        <GithubLogo />
-                    </div>
-                    <span>Github</span>
-                </button>
+            <button className="flex justify-center items-center w-full text-center bg-white text-gray-600 text-lg font-semibold h-14 border border-gray-600 rounded-lg mb-4 hover:shadow-xl hover:scale-105" onClick={githubAuth}>
+                <div className="flex justify-center items-center mr-2 w-10 h-10 min-w-10 min-h-10">
+                    <GithubLogo />
+                </div>
+                <span>Github</span>
+            </button>
 
-                <hr />
-                <p className="mt-4">
-                    Don't have an account?{" "}
-                    <a className="underline hover:text-cyan-400" href="/signup">
-                        Sign up
-                    </a>
-                </p>
-            </section>
-        </div>
+            <hr />
+            <p className="mt-4">
+                Don't have an account?{" "}
+                <a className="underline hover:text-cyan-400" href="/signup">
+                    Sign up
+                </a>
+            </p>
+        </section>
     );
 }

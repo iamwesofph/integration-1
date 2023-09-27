@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import DropDownCaret from "../icons/dropdowncaretsmall.svg?react";
 import BellIcon from "../icons/bell.svg?react";
@@ -8,19 +8,28 @@ import CogIcon from "../icons/cog.svg?react";
 
 export default function DropDown({ user }) {
     const [open, setOpen] = useState(false);
+    const dropdownRef = useRef(null);
+    const buttonRef = useRef(null);
+
+    const handleClickOutside = (event) => {
+        //Set to false if he dropdown is open, the click did not occur inside the dropdown and the click did not occur inside the button that opens the dropdown
+        if (open && dropdownRef.current && !dropdownRef.current.contains(event.target) && !buttonRef.current.contains(event.target)) {
+            setOpen(false);
+        }
+    };
 
     return (
         <>
-            <button className="flex justify-center items-center bg-slate-700 border border-cyan-400 rounded-3xl px-4 py-2 text-sm hover:bg-slate-900 transition-colors duration-300 whitespace-nowrap" onClick={() => setOpen(!open)}>
+            <button className="flex justify-center items-center bg-slate-700 border border-cyan-400 rounded-3xl px-4 py-2 text-sm hover:bg-slate-900 transition-colors duration-300 whitespace-nowrap" onClick={() => setOpen(!open)} ref={buttonRef}>
                 <span className="mr-1">{user.firstName || user.displayName}</span>
                 <DropDownCaret />
             </button>
-            <AnimatePresence>{open && <DropdownMenu user={user} />}</AnimatePresence>
+            <AnimatePresence>{open && <DropdownMenu user={user} handleClickOutside={handleClickOutside} dropdownRef={dropdownRef} />}</AnimatePresence>
         </>
     );
 }
 
-function DropdownMenu({ user }) {
+function DropdownMenu({ user, handleClickOutside, dropdownRef }) {
     // TODO: understand why this doesnt work instead of the window.open method + try POST if its better than GET for logouts.
     // const handleLogout = async () => {
     //     try {
@@ -37,13 +46,30 @@ function DropdownMenu({ user }) {
         window.open("/auth/logout", "_self");
     };
 
+    // Attach the click event listener when the dropdown is open
+    if (open) {
+        document.addEventListener("mouseup", handleClickOutside);
+    }
+
+    // Remove the event listener when the dropdown is closed
+    useEffect(() => {
+        return () => {
+            document.removeEventListener("mouseup", handleClickOutside);
+        };
+    }, []);
+
     return (
         <motion.div
             className="h-auto w-72 absolute right-0 flex flex-col border border-cyan-400 bg-gray-800 rounded-lg text-sm"
-            initial={{ opacity: 0, scale: 0.3, x: 50, y: -150 }}
-            animate={{ opacity: 1, scale: 1, x: -22, y: 20 }}
-            exit={{ opacity: 0, scale: 0.3, x: 50, y: -150 }} // Define the exit animation
+            // initial={{ opacity: 0, scale: 0.3, x: 50, y: -150 }}
+            // animate={{ opacity: 1, scale: 1, x: -22, y: 20 }}
+            // exit={{ opacity: 0, scale: 0.3, x: 50, y: -150 }} // Define the exit animation
+            // transition={{ duration: 0.2, ease: "easeIn" }}
+            initial={{ opacity: 0, scale: 0.3, x: 50, y: 100 }}
+            animate={{ opacity: 1, scale: 1, x: -22, y: 300 }}
+            exit={{ opacity: 0, scale: 0.3, x: 50, y: 150 }} // Define the exit animation
             transition={{ duration: 0.2, ease: "easeIn" }}
+            ref={dropdownRef}
         >
             <div className="flex flex-col items-center gap-6 py-6">
                 <div>{user.profilePhoto ? <img className="rounded-full w-14 border border-white" src={user.profilePhoto} alt="profile photo" referrerPolicy="no-referrer" /> : <CogIcon className="w-6 h-6 fill-current m-3" />}</div>
