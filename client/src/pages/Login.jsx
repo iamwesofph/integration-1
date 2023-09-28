@@ -1,9 +1,12 @@
-import React from "react";
+import { useState } from "react";
 import FacebookLogo from "../icons/facebooklogo.svg?react";
 import GoogleLogo from "../icons/googlelogo.svg?react";
 import GithubLogo from "../icons/githublogo.svg?react";
+import { Link } from "react-router-dom";
 
 export default function Login({ setNotification }) {
+    const [showPassword, setShowPassword] = useState(false);
+
     const googleAuth = () => {
         // window.open(`${import.meta.env.VITE_SERVER_URL}/auth/google`, "_self");
         window.open(`/auth/google`, "_self");
@@ -51,14 +54,25 @@ export default function Login({ setNotification }) {
 
             <label className="block">
                 <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">Email</span>
-                <input type="email" name="email" className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="you@example.com" />
+                <input type="email" name="email" className="mt-1 mb-2 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="you@example.com" />
             </label>
+
+            {showPassword && (
+                <label className="block">
+                    <span className="block text-sm font-medium text-slate-700">Password</span>
+                    <input type="password" name="password" className="mt-1 mb-2 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="You@1234" />
+                </label>
+            )}
+
+            <button className="bg-cyan-400 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded focus:outline-none mr-2" type="button" onClick={() => setShowPassword(true)}>
+                {showPassword ? "Login" : "Next"}
+            </button>
 
             <p className="mt-4">
                 Don't have an account?{" "}
-                <a className="underline hover:text-cyan-400" href="/signup">
+                <Link className="underline hover:text-cyan-400" to="/signup">
                     Sign up
-                </a>
+                </Link>
             </p>
         </section>
     );

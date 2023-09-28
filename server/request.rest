@@ -57,6 +57,9 @@ sec-ch-ua-platform: "Windows"
 GET http://localhost:3001/api/anecdotes/
 
 ###
+GET http://localhost:3001/api/users/
+
+###
 POST http://localhost:3001/api/anecdotes/
 content-type: application/json
 
@@ -65,6 +68,18 @@ content-type: application/json
     "author": "Jez Humble",
     "info": "https://martinfowler.com/bliki/FrequencyReducesDifficulty.html",
     "votes": 21
+}
+
+###
+POST http://localhost:3001/api/users/
+content-type: application/json
+
+{
+    "userName": "saw",
+    "name": "Superuser",
+    "password": "saw",
+    "email": "root2@gmail.com",
+    "source": "local"
 }
 
 ###

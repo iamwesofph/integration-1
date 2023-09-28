@@ -170,30 +170,43 @@ passport.use(
     )
 );
 
-var LocalStrategy = require("passport-local");
-var crypto = require("crypto");
+// passport.use(
+//     new LocalStrategy(async (userName, password, done) => {
+//         try {
+//             console.log("STARTING LOCALSTRATEGY");
+//             const currentUser = await User.findOne({ userName: userName });
 
-passport.use(
-    new LocalStrategy(function verify(username, password, done) {
-        // db.get("SELECT * FROM users WHERE username = ?", [username], function (err, user) {
-        //     if (err) {
-        //         return cb(err);
-        //     }
-        //     if (!user) {
-        //         return cb(null, false, { message: "Incorrect username or password." });
-        //     }
-        //     crypto.pbkdf2(password, user.salt, 310000, 32, "sha256", function (err, hashedPassword) {
-        //         if (err) {
-        //             return cb(err);
-        //         }
-        //         if (!crypto.timingSafeEqual(user.hashed_password, hashedPassword)) {
-        //             return cb(null, false, { message: "Incorrect username or password." });
-        //         }
-        //         return cb(null, user);
-        //     });
-        // });
-    })
-);
+//             if (!currentUser) {
+//                 console.log("NO CURRENT USER FOUND");
+//                 return done(null, false, { message: "Incorrect username or password." });
+//             }
+
+//             if (currentUser.source != "local") {
+//                 console.log("DUPLICATE PROVIDER USER FOUND");
+//                 return done(null, false, { message: `We were unable to log you in with that login method. Log in with the current social provider linked to your account, either Google or GitHub.` });
+//             }
+
+//             crypto.pbkdf2(password, currentUser.salt, 310000, 32, "sha256", function (err, hashedPassword) {
+//                 if (err) {
+//                     console.log("ERROR HASHING");
+//                     return done(err);
+//                 }
+//                 if (!crypto.timingSafeEqual(currentUser.hashed_password, hashedPassword)) {
+//                     console.log("INCORRECT HASH");
+//                     return done(null, false, { message: "Incorrect username or password." });
+//                 }
+//                 console.log("SUCCESSFUL USER FOUND");
+//                 return done(null, currentUser);
+//             });
+
+//             currentUser.lastVisited = new Date();
+//             return done(null, currentUser);
+//         } catch (error) {
+//             console.log("FINDONE ERROR");
+//             return done(error);
+//         }
+//     })
+// );
 
 passport.serializeUser((user, done) => {
     done(null, user);
@@ -204,8 +217,6 @@ passport.deserializeUser((user, done) => {
 });
 
 router.get("/auth/login/success", function (req, res) {
-    console.log("REQ = ", req.session.messages);
-
     if (req.user) {
         res.status(200).json({
             error: false,
@@ -231,6 +242,7 @@ router.get(
     passport.authenticate("google", {
         failureRedirect: `${config.FRONTEND_URL}/login`,
         successRedirect: config.FRONTEND_URL,
+        failureMessage: true, // Capture failure message
     })
 );
 
@@ -244,6 +256,7 @@ router.get(
     passport.authenticate("facebook", {
         failureRedirect: `${config.FRONTEND_URL}/login`,
         successRedirect: config.FRONTEND_URL,
+        failureMessage: true, // Capture failure message
     })
 );
 
@@ -259,6 +272,17 @@ router.get(
         // successRedirect: `http://localhost:8888`,
     })
 );
+
+// router.get(
+//     "/auth/local",
+//     passport.authenticate("local", {
+//         // failureRedirect: `${config.FRONTEND_URL}/login`,
+//         // successRedirect: config.FRONTEND_URL,
+//         failureRedirect: "http://localhost:1111",
+//         successRedirect: "http://localhost:9999",
+//         failureMessage: true,
+//     })
+// );
 
 router.get("/auth/logout", (req, res) => {
     req.session.destroy((err) => {

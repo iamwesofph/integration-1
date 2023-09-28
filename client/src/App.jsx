@@ -4,6 +4,7 @@ import NotFound from "./pages/NotFound";
 import RootLayout from "./pages/RootLayout";
 import AnecdoteList from "./pages/AnecdoteList";
 import AnecdoteDetails from "./pages/AnecdoteDetails";
+import SignupForm from "./pages/SignupForm";
 import CreateNew from "./pages/CreateNew";
 import Login from "./pages/Login";
 import anecdoteService from "./services/anecdotes";
@@ -25,6 +26,10 @@ function App() {
                 const { data } = await axios.get(url, { withCredentials: true });
                 console.log(data.user);
                 setUser(data.user);
+                setNotification({ message: "Login successful!", type: "success" });
+                setTimeout(() => {
+                    setNotification(null);
+                }, 1000);
             } catch (err) {
                 // if there is no user found, or if there is duplicate record with another provider it will catch error
                 console.log(err);
@@ -34,7 +39,7 @@ function App() {
                     setNotification({ message: err.response.data.message[0], type: "error" });
                     setTimeout(() => {
                         setNotification(null);
-                    }, 5000);
+                    }, 7000);
                 } else {
                     setNotification({ message: "Hello! Login to gain complete access", type: "success" });
                     setTimeout(() => {
@@ -80,6 +85,7 @@ function App() {
                 <Route path="anecdotes/:id" element={<AnecdoteDetails anecdotes={anecdotes} />} />
                 <Route path="create" element={<CreateNew setNotification={setNotification} anecdotes={anecdotes} setAnecdotes={setAnecdotes} />} />
                 <Route path="about" element={<About />}></Route>
+                <Route path="signup" element={<SignupForm setNotification={setNotification} />}></Route>
                 <Route path="*" element={<NotFound />} />
             </Route>
         )

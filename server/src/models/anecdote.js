@@ -15,6 +15,10 @@ const anecdoteSchema = new mongoose.Schema({
     votes: {
         type: Number,
     },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    },
 });
 
 anecdoteSchema.set("toJSON", {

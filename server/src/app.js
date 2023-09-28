@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 
 const cors = require("cors");
 const anecdotesRouter = require("./controllers/anecdotes");
+const usersRouter = require("./controllers/users");
 const authRouter = require("./controllers/auth");
 const middleware = require("./utils/middleware");
 const winstonLogger = require("./utils/winstonLogger");
@@ -73,6 +74,7 @@ app.use(passport.session());
 
 app.use("/", authRouter);
 app.use("/", anecdotesRouter);
+app.use("/", usersRouter);
 
 app.use(middleware.errorHandler);
 
