@@ -11,7 +11,6 @@ const SignupForm = ({ setNotification }) => {
         confirmPassword: "",
         // profilePhoto: null, // For file input, initialize with null
         source: "local",
-        verified: false,
         // uploadPhoto: null,
     });
 

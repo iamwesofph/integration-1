@@ -25,7 +25,8 @@ const userSchema = new mongoose.Schema({
     // uploadPhoto: File,
     source: { type: String, required: [true, "source not specified"] },
     lastVisited: { type: Date, default: new Date() },
-    verified: Boolean,
+    isVerified: Boolean,
+    verificationToken: String,
 });
 
 userSchema.plugin(uniqueValidator);
