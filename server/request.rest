@@ -78,7 +78,7 @@ content-type: application/json
     "userName": "saw",
     "name": "Superuser",
     "password": "saw",
-    "email": "root2@gmail.com",
+    "email": "saw@gmail.com",
     "source": "local"
 }
 
@@ -103,6 +103,10 @@ content-type: application/json
     "info": "c",
     "votes": 1
 }
+
+###
+GET http://localhost:3001/api/verify-email/?token=$2b$10$rQ2LWI3r9clUPmTkCzKX.e3.e3TFf/eR5r5Rdy5RhFmRmoIOpU33u
+
 
 # ###
 # GET http://localhost:3001/info/

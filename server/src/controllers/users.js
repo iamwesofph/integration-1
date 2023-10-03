@@ -3,12 +3,13 @@ const usersRouter = require("express").Router();
 const User = require("../models/user");
 const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
+const config = require("../utils/config");
 
 usersRouter.post("/api/users", async (request, response) => {
     const { displayName, name, password, email, source } = request.body;
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
-    const verificationToken = await bcrypt.hash("hex", saltRounds);
+    const verificationToken = await bcrypt.hash(email, saltRounds);
 
     const user = new User({
         displayName,
@@ -23,7 +24,7 @@ usersRouter.post("/api/users", async (request, response) => {
 
     const savedUser = await user.save();
 
-    const verificationLink = `http://yourapp.com/verify/${verificationToken}`;
+    const verificationLink = `http://localhost:3001/api/verify-email/?token=${verificationToken}`;
     console.log(verificationLink);
 
     const transporter = nodemailer.createTransport({
@@ -55,31 +56,6 @@ usersRouter.post("/api/users", async (request, response) => {
             verificationLink: verificationLink,
         }, // send extra values to template
     };
-
-    // const emailBody = {
-    //     body: {
-    //         name: displayName,
-    //         intro: "Welcome to Wesbook! We're very excited to have you on board.",
-    //         action: {
-    //             instructions: "To get started with Wesbook, please click here:",
-    //             button: {
-    //                 color: "#22d3ee",
-    //                 text: "Verify your email",
-    //                 link: verificationLink,
-    //             },
-    //         },
-    //         outro: "Need help, or have questions? Just reply to this email, we'd love to help.",
-    //     },
-    // };
-
-    // const mail = MailGenerator.generate(emailBody);
-
-    // const envelope = {
-    //     from: process.env.EMAIL,
-    //     to: email,
-    //     subject: "Place Order",
-    //     html: mail,
-    // };
 
     // transporter
     //     .sendMail(mailOptions)
@@ -124,6 +100,24 @@ usersRouter.get("/api/users", async (request, response) => {
     } catch (error) {
         response.status(500).json({ error: "An error occured while fetching users" });
     }
+});
+
+usersRouter.get("/api/verify-email", async (req, res) => {
+    const token = req.query.token;
+
+    const filter = { verificationToken: token };
+    const update = { isVerified: true };
+
+    // Validate the token against the database or wherever it's stored
+    // If the token is valid, mark the user's email as verified
+    const user = await User.findOneAndUpdate(filter, update, {
+        new: true,
+    });
+
+    // res.status(200).json(`${user.email} is now verified`);
+
+    // Redirect to login page
+    res.redirect(`${config.FRONTEND_URL}/verification-successful`);
 });
 
 module.exports = usersRouter;

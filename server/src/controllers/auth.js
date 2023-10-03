@@ -170,44 +170,6 @@ passport.use(
     )
 );
 
-// passport.use(
-//     new LocalStrategy(async (userName, password, done) => {
-//         try {
-//             console.log("STARTING LOCALSTRATEGY");
-//             const currentUser = await User.findOne({ userName: userName });
-
-//             if (!currentUser) {
-//                 console.log("NO CURRENT USER FOUND");
-//                 return done(null, false, { message: "Incorrect username or password." });
-//             }
-
-//             if (currentUser.source != "local") {
-//                 console.log("DUPLICATE PROVIDER USER FOUND");
-//                 return done(null, false, { message: `We were unable to log you in with that login method. Log in with the current social provider linked to your account, either Google or GitHub.` });
-//             }
-
-//             crypto.pbkdf2(password, currentUser.salt, 310000, 32, "sha256", function (err, hashedPassword) {
-//                 if (err) {
-//                     console.log("ERROR HASHING");
-//                     return done(err);
-//                 }
-//                 if (!crypto.timingSafeEqual(currentUser.hashed_password, hashedPassword)) {
-//                     console.log("INCORRECT HASH");
-//                     return done(null, false, { message: "Incorrect username or password." });
-//                 }
-//                 console.log("SUCCESSFUL USER FOUND");
-//                 return done(null, currentUser);
-//             });
-
-//             currentUser.lastVisited = new Date();
-//             return done(null, currentUser);
-//         } catch (error) {
-//             console.log("FINDONE ERROR");
-//             return done(error);
-//         }
-//     })
-// );
-
 passport.serializeUser((user, done) => {
     done(null, user);
 });

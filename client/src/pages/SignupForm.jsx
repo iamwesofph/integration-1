@@ -27,15 +27,13 @@ const SignupForm = ({ setNotification }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        const returnedUser = await userService.create(formData);
-        console.log(`RETURNED USER: ${JSON.stringify(returnedUser)}`);
-
-        setNotification({ message: `You're signed up as ${formData.displayName}!`, type: "success" });
-        setTimeout(() => {
-            setNotification(null);
-        }, 5000);
+        setNotification({ message: `You're signed up as ${formData.displayName}! /n Now check your inbox to verify your email`, type: "success" });
+        // setTimeout(() => {
+        //     setNotification(null);
+        // }, 5000);
         navigate("/");
+        const returnedUser = await userService.create(formData);
+        // console.log(`RETURNED USER: ${JSON.stringify(returnedUser)}`);
     };
 
     return (

@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import anecdoteService from "./services/anecdotes";
 import About from "./pages/About";
 import axios from "axios";
+import VerificationSuccessful from "./pages/VerificationSuccessful";
 
 axios.defaults.withCredentials = true;
 
@@ -86,6 +87,7 @@ function App() {
                 <Route path="create" element={<CreateNew setNotification={setNotification} anecdotes={anecdotes} setAnecdotes={setAnecdotes} />} />
                 <Route path="about" element={<About />}></Route>
                 <Route path="signup" element={<SignupForm setNotification={setNotification} />}></Route>
+                <Route path="verification-successful" element={<VerificationSuccessful />}></Route>
                 <Route path="*" element={<NotFound />} />
             </Route>
         )
