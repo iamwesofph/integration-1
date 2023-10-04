@@ -22,13 +22,14 @@ const getTokenFrom = (request) => {
 //     });
 // });
 
-anecdotesRouter.get("/api/anecdotes", async (request, response) => {
+anecdotesRouter.get("/api/anecdotes", async (request, response, next) => {
     try {
-        const anecdotes = await Anecdote.find({});
+        const anecdotes = await Anecdote.find({}).populate("user");
         response.json(anecdotes);
     } catch (error) {
         // Handle any errors that occur during the operation.
-        response.status(500).json({ error: "An error occurred while fetching data." });
+        // response.status(500).json({ error: "An error occurred while fetching data." });
+        next(error);
     }
 });
 

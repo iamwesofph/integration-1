@@ -93,12 +93,13 @@ usersRouter.post("/api/users", async (request, response) => {
     //     });
 });
 
-usersRouter.get("/api/users", async (request, response) => {
+usersRouter.get("/api/users", async (request, response, next) => {
     try {
-        const users = await User.find({});
+        const users = await User.find({}).populate("anecdotes");
         response.json(users);
     } catch (error) {
-        response.status(500).json({ error: "An error occured while fetching users" });
+        // response.status(500).json({ error: "An error occured while fetching users" });
+        next(error);
     }
 });
 
