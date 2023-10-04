@@ -4,17 +4,17 @@ const Anecdote = require("../models/anecdote");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
-const getTokenFrom = (request) => {
-    console.log("GETTOKENFROM");
-    const authorization = request.get("authorization");
-    console.log(authorization);
-    if (authorization && authorization.startsWith("Bearer ")) {
-        const token = authorization.replace("Bearer ", "");
-        console.log(token);
-        return token;
-    }
-    return null;
-};
+// const getTokenFrom = (request) => {
+//     console.log("GETTOKENFROM");
+//     const authorization = request.get("authorization");
+//     console.log(authorization);
+//     if (authorization && authorization.startsWith("Bearer ")) {
+//         const token = authorization.replace("Bearer ", "");
+//         console.log(token);
+//         return token;
+//     }
+//     return null;
+// };
 
 // anecdotesRouter.get("/api/anecdotes", (request, response) => {
 //     Anecdote.find({}).then((persons) => {
@@ -37,7 +37,9 @@ anecdotesRouter.post("/api/anecdotes", async (request, response, next) => {
     const body = request.body;
 
     try {
-        const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET);
+        console.log("REQUEST TOKEN");
+        console.log(request.token);
+        const decodedToken = jwt.verify(request.token, process.env.SECRET);
         if (!decodedToken.id) {
             return response.status(401).json({ error: "token invalid" });
         }

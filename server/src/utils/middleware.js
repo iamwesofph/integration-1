@@ -29,8 +29,37 @@ const errorHandler = (error, request, response, next) => {
     next(error);
 };
 
+const tokenExtractor = (request, response, next) => {
+    const authorization = request.get("authorization");
+    if (authorization && authorization.startsWith("Bearer ")) {
+        request.token = authorization.replace("Bearer ", "");
+    }
+    next(); // Continue to the next middleware or route handler
+};
+
+// const userExtractor = async (request, response, next) => {
+//     // try {
+//     const decodedToken = jwt.verify(request.token, process.env.SECRET);
+//     // console.log(decodedToken);
+//     if (!decodedToken.id) {
+//         return response.status(401).json({ error: "token invalid" });
+//     }
+
+//     const user = await User.findById(decodedToken.id);
+
+//     // console.log(user.id);
+
+//     request.user = user;
+
+//     next(); // Continue to the next middleware or route handler
+//     // } catch (error) {
+//     //     return response.status(401).json({ error: "token invalid catch" });
+//     // }
+// };
+
 module.exports = {
     requestLogger,
     unknownEndpoint,
     errorHandler,
+    tokenExtractor,
 };
