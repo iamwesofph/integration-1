@@ -87,6 +87,18 @@ POST http://localhost:3001/api/anecdotes/
 content-type: application/json
 
 {
+    "content": "Pr",
+    "author": "Donald Knuth",
+    "info": "http://wiki.c2.com/?PrematureOptimization",
+    "votes": 1
+}
+
+###
+POST http://localhost:3001/api/anecdotes/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFub3lvcmVuZWx5bkBnbWFpbC5jb20iLCJpZCI6IjY1MWQwN2JmNzk5ZWRmNzNkNGM3MTU2MiIsImlhdCI6MTY5NjQxNDM2MX0.MFzhc9rU7ijWbL2EI10VxPP0T9bJrzD8ULP6bbYnEZw
+
+{
     "content": "Premature optimization is the root of all evil",
     "author": "Donald Knuth",
     "info": "http://wiki.c2.com/?PrematureOptimization",
@@ -95,18 +107,26 @@ content-type: application/json
 
 ###
 POST http://localhost:3001/api/anecdotes/
-content-type: application/json
+Content-Type: application/json
+Authorization: Bearer hello
 
 {
-    "content": "a",
-    "author": "b",
-    "info": "c",
+    "author": "Donald Knuth",
+    "info": "http://wiki.c2.com/?PrematureOptimization",
     "votes": 1
 }
 
 ###
-GET http://localhost:3001/api/verify-email/?token=$2b$10$rQ2LWI3r9clUPmTkCzKX.e3.e3TFf/eR5r5Rdy5RhFmRmoIOpU33u
+GET http://localhost:3001/api/verify-email/?token=$2b$10$bGdf1GZ6JfSZrFyRVceWueHYE7qHYAfjsGezPkQuU/I.OFEBdNbf6
 
+###
+POST http://localhost:3001/api/login-local/
+content-type: application/json
+
+{
+    "email": "anoyorenelyn@gmail.com",
+    "password": "21"
+}
 
 # ###
 # GET http://localhost:3001/info/

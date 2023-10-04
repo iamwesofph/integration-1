@@ -11,6 +11,7 @@ export default function Login({ setNotification }) {
         // window.open(`${import.meta.env.VITE_SERVER_URL}/auth/google`, "_self");
         window.open(`/auth/google`, "_self");
     };
+
     const facebookAuth = () => {
         // window.open(`${import.meta.env.VITE_SERVER_URL}/auth/google`, "_self");
         // window.open(`/auth/facebook`, "_self");
@@ -20,9 +21,20 @@ export default function Login({ setNotification }) {
             setNotification(null);
         }, 7000);
     };
+
     const githubAuth = () => {
         // window.open(`${import.meta.env.VITE_SERVER_URL}/auth/google`, "_self");
         window.open(`/auth/github`, "_self");
+    };
+
+    const handleNextLogin = async () => {
+        if (showPassword === false) {
+            setShowPassword(true);
+        } else {
+            const url = `/auth/login-local`;
+            const { data } = await axios.get(url, { withCredentials: true });
+            console.log(data.user);
+        }
     };
 
     return (
@@ -54,7 +66,7 @@ export default function Login({ setNotification }) {
 
             <label className="block">
                 <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">Email</span>
-                <input type="email" name="email" className="mt-1 mb-2 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="you@example.com" />
+                <input type="email" name="email" className="mt-1 mb-2 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 disabled:bg-slate-300" placeholder="you@example.com" autoFocus disabled={showPassword ? true : false} />
             </label>
 
             {showPassword && (
@@ -64,7 +76,7 @@ export default function Login({ setNotification }) {
                 </label>
             )}
 
-            <button className="bg-cyan-400 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded focus:outline-none mr-2" type="button" onClick={() => setShowPassword(true)}>
+            <button className="bg-cyan-400 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded focus:outline-none mr-2" type="button" onClick={() => handleNextLogin()}>
                 {showPassword ? "Login" : "Next"}
             </button>
 

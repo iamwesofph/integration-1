@@ -105,19 +105,16 @@ usersRouter.get("/api/users", async (request, response) => {
 usersRouter.get("/api/verify-email", async (req, res) => {
     const token = req.query.token;
 
-    const filter = { verificationToken: token };
-    const update = { isVerified: true };
-
-    // Validate the token against the database or wherever it's stored
-    // If the token is valid, mark the user's email as verified
-    const user = await User.findOneAndUpdate(filter, update, {
-        new: true,
-    });
-
+    // if the user is already verified, then show a different page
+    const user = await User.findOne({ verificationToken: token });
+    if (user.isVerified) {
+        res.redirect(`${config.FRONTEND_URL}/verification-nothing`);
+    } else {
+        user.isVerified = true;
+        await user.save();
+        res.redirect(`${config.FRONTEND_URL}/verification-successful`);
+    }
     // res.status(200).json(`${user.email} is now verified`);
-
-    // Redirect to login page
-    res.redirect(`${config.FRONTEND_URL}/verification-successful`);
 });
 
 module.exports = usersRouter;
