@@ -1,8 +1,7 @@
 const anecdotesRouter = require("express").Router();
 // const date = new Date();
 const Anecdote = require("../models/anecdote");
-const jwt = require("jsonwebtoken");
-const User = require("../models/user");
+const middleware = require("../utils/middleware");
 
 // const getTokenFrom = (request) => {
 //     console.log("GETTOKENFROM");
@@ -27,27 +26,13 @@ anecdotesRouter.get("/api/anecdotes", async (request, response, next) => {
         const anecdotes = await Anecdote.find({}).populate("user");
         response.json(anecdotes);
     } catch (error) {
-        // Handle any errors that occur during the operation.
-        // response.status(500).json({ error: "An error occurred while fetching data." });
         next(error);
     }
 });
 
-anecdotesRouter.post("/api/anecdotes", async (request, response, next) => {
-    const body = request.body;
-
+anecdotesRouter.post("/api/anecdotes", middleware.userExtractor, async (request, response, next) => {
     try {
-        console.log("REQUEST TOKEN");
-        console.log(request.token);
-        const decodedToken = jwt.verify(request.token, process.env.SECRET);
-        if (!decodedToken.id) {
-            return response.status(401).json({ error: "token invalid" });
-        }
-        const user = await User.findById(decodedToken.id);
-        console.log("DECODED TOKEN");
-        console.log(decodedToken);
-        console.log("DECODED TOKEN USER");
-        console.log(user);
+        const body = request.body;
 
         if (!body.content) {
             return response.status(400).json({

@@ -1,3 +1,5 @@
+const User = require("../models/user");
+const jwt = require("jsonwebtoken");
 const logger = require("./logger");
 
 const requestLogger = (request, response, next) => {
@@ -37,29 +39,30 @@ const tokenExtractor = (request, response, next) => {
     next(); // Continue to the next middleware or route handler
 };
 
-// const userExtractor = async (request, response, next) => {
-//     // try {
-//     const decodedToken = jwt.verify(request.token, process.env.SECRET);
-//     // console.log(decodedToken);
-//     if (!decodedToken.id) {
-//         return response.status(401).json({ error: "token invalid" });
-//     }
+const userExtractor = async (request, response, next) => {
+    console.log(`START ${request.token}`);
+    try {
+        const decodedToken = jwt.verify(request.token, process.env.SECRET);
+        console.log(decodedToken);
+        if (!decodedToken.id) {
+            return response.status(401).json({ error: "token invalid" });
+        }
 
-//     const user = await User.findById(decodedToken.id);
+        const user = await User.findById(decodedToken.id);
+        console.log(user);
 
-//     // console.log(user.id);
-
-//     request.user = user;
-
-//     next(); // Continue to the next middleware or route handler
-//     // } catch (error) {
-//     //     return response.status(401).json({ error: "token invalid catch" });
-//     // }
-// };
+        request.user = user;
+        next(); // Continue to the next middleware or route handler
+    } catch (error) {
+        // return response.status(401).json({ error: "token invalid catch" });
+        next(error);
+    }
+};
 
 module.exports = {
     requestLogger,
     unknownEndpoint,
     errorHandler,
     tokenExtractor,
+    userExtractor,
 };

@@ -96,7 +96,7 @@ content-type: application/json
 ###
 POST http://localhost:3001/api/anecdotes/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFub3lvcmVuZWx5bkBnbWFpbC5jb20iLCJpZCI6IjY1MWQwN2JmNzk5ZWRmNzNkNGM3MTU2MiIsImlhdCI6MTY5NjQxNDM2MX0.MFzhc9rU7ijWbL2EI10VxPP0T9bJrzD8ULP6bbYnEZw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFub3lvcmVuZWx5bkBnbWFpbC5jb20iLCJpZCI6IjY1MWQwN2JmNzk5ZWRmNzNkNGM3MTU2MiIsImlhdCI6MTY5NjQxNDY1Nn0.HZqyYHD2GXRE5RQwiecsO7VQL9Nloa2NbYHoknPe5tI
 
 {
     "content": "Premature optimization is the root of all evil",
@@ -124,7 +124,7 @@ POST http://localhost:3001/api/login-local/
 content-type: application/json
 
 {
-    "email": "anoyorenelyn@gmail.com",
+    "email": "renelynwillhelpyou@gmail.com",
     "password": "21"
 }
 
