@@ -3,9 +3,14 @@ import FacebookLogo from "../icons/facebooklogo.svg?react";
 import GoogleLogo from "../icons/googlelogo.svg?react";
 import GithubLogo from "../icons/githublogo.svg?react";
 import { Link } from "react-router-dom";
+import { useField } from "../hooks/";
 
 export default function Login({ setNotification }) {
     const [showPassword, setShowPassword] = useState(false);
+    // const [email, setEmail] = useState("");
+    // const [password, setPassword] = useState("");
+    const email = useField("email");
+    const password = useField("password");
 
     const googleAuth = () => {
         // window.open(`${import.meta.env.VITE_SERVER_URL}/auth/google`, "_self");
@@ -32,7 +37,7 @@ export default function Login({ setNotification }) {
             setShowPassword(true);
         } else {
             const url = `/auth/login-local`;
-            const { data } = await axios.get(url, { withCredentials: true });
+            const { data } = await axios.get(url);
             console.log(data.user);
         }
     };
@@ -66,13 +71,13 @@ export default function Login({ setNotification }) {
 
             <label className="block">
                 <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">Email</span>
-                <input type="email" name="email" className="mt-1 mb-2 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 disabled:bg-slate-300" placeholder="you@example.com" autoFocus disabled={showPassword ? true : false} />
+                <input {...email} reset="" name="email" className="mt-1 mb-2 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 disabled:bg-slate-300" placeholder="you@example.com" autoFocus disabled={showPassword ? true : false} />
             </label>
 
             {showPassword && (
                 <label className="block">
                     <span className="block text-sm font-medium text-slate-700">Password</span>
-                    <input type="password" name="password" className="mt-1 mb-2 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="You@1234" />
+                    <input {...password} reset="" name="password" className="mt-1 mb-2 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="You@1234" />
                 </label>
             )}
 
