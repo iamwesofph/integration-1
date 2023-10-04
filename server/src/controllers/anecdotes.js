@@ -45,6 +45,7 @@ anecdotesRouter.post("/api/anecdotes", middleware.userExtractor, async (request,
             author: body.author,
             info: body.info,
             votes: body.votes,
+            user: request.user._id,
         });
 
         const savedAnecdote = await anecdote.save();

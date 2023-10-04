@@ -14,7 +14,14 @@ const getAll = async () => {
 
 const create = async (newObject) => {
     try {
-        const response = await axios.post(baseUrl, newObject);
+        const config = {
+            headers: {
+                "Content-Type": "application/json", // Set Content-Type header
+                Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQzNDU2NCwiZXhwIjoxNjk2NDM4MTY0fQ.mD05RMUg18t7TbLAqnZ4RnFDConxrTHQhxW-z2mDssU`, // Set Authorization header
+            },
+        };
+
+        const response = await axios.post(baseUrl, newObject, config);
         return response.data;
     } catch (error) {
         // Handle any errors here

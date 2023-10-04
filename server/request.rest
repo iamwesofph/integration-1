@@ -96,21 +96,10 @@ content-type: application/json
 ###
 POST http://localhost:3001/api/anecdotes/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFub3lvcmVuZWx5bkBnbWFpbC5jb20iLCJpZCI6IjY1MWQwN2JmNzk5ZWRmNzNkNGM3MTU2MiIsImlhdCI6MTY5NjQxNDY1Nn0.HZqyYHD2GXRE5RQwiecsO7VQL9Nloa2NbYHoknPe5tI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQzNDU2NCwiZXhwIjoxNjk2NDM4MTY0fQ.mD05RMUg18t7TbLAqnZ4RnFDConxrTHQhxW-z2mDssU
 
 {
     "content": "Premature optimization is the root of all evil",
-    "author": "Donald Knuth",
-    "info": "http://wiki.c2.com/?PrematureOptimization",
-    "votes": 1
-}
-
-###
-POST http://localhost:3001/api/anecdotes/
-Content-Type: application/json
-Authorization: Bearer hello
-
-{
     "author": "Donald Knuth",
     "info": "http://wiki.c2.com/?PrematureOptimization",
     "votes": 1
