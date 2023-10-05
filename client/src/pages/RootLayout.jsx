@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import Menu from "../icons/menu.svg?react";
 import X from "../icons/x.svg?react";
 
-export default function RootLayout({ notification, type, user }) {
+export default function RootLayout({ notification, type, user, setNotification }) {
     // const isUserLoaded = user && user.firstName && user.profilePhoto;
     const isUserLoaded = user;
     const [isExpanded, setIsExpanded] = useState(false);
@@ -39,7 +39,7 @@ export default function RootLayout({ notification, type, user }) {
                         </div>
                         <div className="flex items-center gap-6">
                             {isUserLoaded ? (
-                                <DropDown user={user}></DropDown>
+                                <DropDown user={user} setNotification={setNotification}></DropDown>
                             ) : (
                                 <NavLink className="text-cyan-400 bg-gray-800 hover:underline rounded-md px-4 py-1 uppercase" to="/login">
                                     Login

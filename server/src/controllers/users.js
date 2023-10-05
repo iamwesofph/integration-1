@@ -2,7 +2,6 @@ const bcrypt = require("bcrypt");
 const usersRouter = require("express").Router();
 const User = require("../models/user");
 const config = require("../utils/config");
-const sendEmail = require("../utils/sendEmail");
 
 usersRouter.post("/api/users", async (request, response, next) => {
     const { displayName, name, password, email, source, isVerified } = request.body;
@@ -23,11 +22,6 @@ usersRouter.post("/api/users", async (request, response, next) => {
 
         const savedUser = await user.save();
         response.json(savedUser);
-
-        const verificationLink = `http://localhost:3001/api/verify-email/?token=${verificationToken}`;
-        console.log(verificationLink);
-
-        // sendEmail(email, displayName, verificationLink);
     } catch (error) {
         next(error);
     }

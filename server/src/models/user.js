@@ -56,6 +56,7 @@ userSchema.set("toJSON", {
         delete returnedObject.__v;
         // the passwordHash should not be revealed
         delete returnedObject.passwordHash;
+        // the verification token should not be revealed
         delete returnedObject.verificationToken;
     },
 });

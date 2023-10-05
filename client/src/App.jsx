@@ -131,7 +131,7 @@ function App() {
 
     const router = createBrowserRouter(
         createRoutesFromElements(
-            <Route path="/" element={<RootLayout notification={notification} user={user} />}>
+            <Route path="/" element={<RootLayout notification={notification} setNotification={setNotification} user={user} />}>
                 <Route path="login" element={<Login setNotification={setNotification} setUserToken={setUserToken} />}></Route>
                 <Route index element={<AnecdoteList anecdotes={anecdotes} />} />
                 <Route path="anecdotes" element={<AnecdoteList anecdotes={anecdotes} />} />

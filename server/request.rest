@@ -109,7 +109,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZ
 POST http://localhost:3001/api/login-local/success
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQ3OTI0OCwiZXhwIjoxNjk2NDgyODQ4fQ.7r50zQFjpBv1kkvLNE3iMToKrrJoSsohSLTmmSoQ5Hc
 
-
 ###
 GET http://localhost:3001/api/verify-email/?token=$2b$10$bGdf1GZ6JfSZrFyRVceWueHYE7qHYAfjsGezPkQuU/I.OFEBdNbf6
 
@@ -121,6 +120,13 @@ content-type: application/json
     "email": "renelynwillhelpyou@gmail.com",
     "password": "21"
 }
+
+###
+POST http://localhost:3001/api/send-verification-email
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWVhNzFmZmI0NDEyMmUzNzdlNDQzMSIsImlhdCI6MTY5NjUxNTI0NywiZXhwIjoxNjk2NTE4ODQ3fQ.HC_eh1t4rOXIxp_Z7qrKDmgpM9gmTSCbjquxI6mHMDY
+
+
+
 
 # ###
 # GET http://localhost:3001/info/

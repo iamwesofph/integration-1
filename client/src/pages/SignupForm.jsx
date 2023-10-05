@@ -1,5 +1,6 @@
 import { useState } from "react";
 import userService from "../services/users";
+import emailService from "../services/emailService";
 import { useNavigate } from "react-router-dom";
 
 const SignupForm = ({ setNotification }) => {
@@ -27,13 +28,26 @@ const SignupForm = ({ setNotification }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setNotification({ message: `You're signed up as ${formData.displayName}! /n Now check your inbox to verify your email`, type: "success" });
-        // setTimeout(() => {
-        //     setNotification(null);
-        // }, 5000);
-        navigate("/");
-        const returnedUser = await userService.create(formData);
-        // console.log(`RETURNED USER: ${JSON.stringify(returnedUser)}`);
+
+        const loggedUserToken = window.localStorage.getItem("loggedUserToken");
+        const headerConfig = {
+            headers: {
+                Authorization: `Bearer ${loggedUserToken}`,
+                // Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQ3OTI0OCwiZXhwIjoxNjk2NDgyODQ4fQ.7r50zQFjpBv1kkvLNE3iMToKrrJoSsohSLTmmSoQ5Hc",
+            },
+        };
+
+        try {
+            await userService.create(formData);
+            await emailService.sendEmail(headerConfig);
+            setNotification({ message: `You're signed up as ${formData.displayName}! Now check your inbox to verify your email`, type: "success" });
+            setTimeout(() => {
+                setNotification(null);
+            }, 5000);
+            navigate("/");
+        } catch (error) {
+            console.log(`HANDLESUBMIT ERROR ${error}`);
+        }
     };
 
     return (
