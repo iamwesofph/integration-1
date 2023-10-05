@@ -56,15 +56,14 @@ function App() {
 
         const getUserLocal = async () => {
             console.log("USEEFFECT LOCAL");
-            const loggedUserToken = window.localStorage.getItem("loggedUserToken");
-            console.log(loggedUserToken);
+
             if (loggedUserToken) {
                 try {
                     const headerConfig = {
                         headers: {
                             "Content-Type": "application/json",
-                            // Authorization: `Bearer ${loggedUserToken}`,
-                            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQ3OTI0OCwiZXhwIjoxNjk2NDgyODQ4fQ.7r50zQFjpBv1kkvLNE3iMToKrrJoSsohSLTmmSoQ5Hc",
+                            Authorization: `Bearer ${loggedUserToken}`,
+                            // Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQ3OTI0OCwiZXhwIjoxNjk2NDgyODQ4fQ.7r50zQFjpBv1kkvLNE3iMToKrrJoSsohSLTmmSoQ5Hc",
                         },
                     };
 
@@ -95,8 +94,14 @@ function App() {
                 //   noteService.setToken(user.token)
             }
         };
-        getUserOauth();
-        getUserLocal();
+
+        const loggedUserToken = window.localStorage.getItem("loggedUserToken");
+
+        if (loggedUserToken) {
+            getUserLocal();
+        } else {
+            getUserOauth();
+        }
     }, []);
 
     useEffect(() => {
