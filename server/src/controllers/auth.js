@@ -49,6 +49,7 @@ passport.use(
                         firstName,
                         lastName,
                         profilePhoto,
+                        isVerified: true,
                         source: "facebook",
                     });
 
@@ -102,6 +103,7 @@ passport.use(
                         firstName,
                         lastName,
                         profilePhoto,
+                        isVerified: true,
                         source: "google",
                     });
 
@@ -149,6 +151,7 @@ passport.use(
                         displayName,
                         email,
                         profilePhoto,
+                        isVerified: true,
                         source: "github",
                     });
 

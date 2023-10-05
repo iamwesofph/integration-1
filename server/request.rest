@@ -79,8 +79,7 @@ content-type: application/json
     "name": "Superuser",
     "password": "saw",
     "email": "anoyorenelyn@gmail.com",
-    "source": "local",
-    "isVerified": true
+    "source": "local"
 }
 
 ###
@@ -122,7 +121,7 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:3001/api/send-verification-email
+GET http://localhost:3001/api/send-verification-email
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWVhNzFmZmI0NDEyMmUzNzdlNDQzMSIsImlhdCI6MTY5NjUxNTI0NywiZXhwIjoxNjk2NTE4ODQ3fQ.HC_eh1t4rOXIxp_Z7qrKDmgpM9gmTSCbjquxI6mHMDY
 
 
