@@ -19,6 +19,7 @@ function App() {
     const [notification, setNotification] = useState(null);
     const [anecdotes, setAnecdotes] = useState([]);
     const [user, setUser] = useState(null);
+    const [userToken, setUserToken] = useState("");
 
     useEffect(() => {
         const getUser = async () => {
@@ -81,7 +82,7 @@ function App() {
     const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path="/" element={<RootLayout notification={notification} user={user} />}>
-                <Route path="login" element={<Login setNotification={setNotification} />}></Route>
+                <Route path="login" element={<Login setNotification={setNotification} setUserToken={setUserToken} />}></Route>
                 <Route index element={<AnecdoteList anecdotes={anecdotes} />} />
                 <Route path="anecdotes" element={<AnecdoteList anecdotes={anecdotes} />} />
                 <Route path="anecdotes/:id" element={<AnecdoteDetails anecdotes={anecdotes} />} />

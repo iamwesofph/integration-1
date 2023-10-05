@@ -4,8 +4,9 @@ import GoogleLogo from "../icons/googlelogo.svg?react";
 import GithubLogo from "../icons/githublogo.svg?react";
 import { Link } from "react-router-dom";
 import { useField } from "../hooks/";
+import loginService from "../services/login";
 
-export default function Login({ setNotification }) {
+export default function Login({ setNotification, setUserToken }) {
     const [showPassword, setShowPassword] = useState(false);
     // const [email, setEmail] = useState("");
     // const [password, setPassword] = useState("");
@@ -36,9 +37,25 @@ export default function Login({ setNotification }) {
         if (showPassword === false) {
             setShowPassword(true);
         } else {
-            const url = `/auth/login-local`;
-            const { data } = await axios.get(url);
-            console.log(data.user);
+            // Allow handleLogin to set user token state and to store the token to the browsers local storage
+            // Allow handleLogin to store user's token inside 1) state 2) browser's local storage 3) anecdoteService
+            try {
+                //this validates the password against DB, and creates JWT token
+                console.log("HANDLENEXTLOGIN BODY");
+                console.log(email.value);
+                console.log(password.value);
+                const token = await loginService.login({ email: email.value, password: password.value });
+
+                setUserToken(token);
+
+                window.localStorage.setItem("loggedUserToken", token);
+                //to set token for anecdote service,
+                // anecdoteService.setToken(user.token)
+
+                //redirect
+            } catch (error) {
+                console.log(`HANDLENEXTLOGIN ERROR ${error}`);
+            }
         }
     };
 

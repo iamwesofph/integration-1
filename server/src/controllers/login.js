@@ -16,13 +16,15 @@ loginRouter.post("/api/login-local", async (request, response) => {
         return response.status(401).json({
             error: "invalid email or password",
         });
+    } else {
+        console.log("Password is valid");
     }
 
     const userForToken = { id: user._id };
 
     const token = jwt.sign(userForToken, process.env.SECRET, { expiresIn: 60 * 60 });
-
-    response.status(200).send({ token });
+    console.log(`LOGINROUTER TOKEN ${token}`);
+    response.status(200).send(token);
 });
 
 module.exports = loginRouter;

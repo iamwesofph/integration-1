@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "/api/login";
+const baseUrl = "/api/login-local";
 
 const login = async (credentials) => {
     try {

@@ -96,7 +96,7 @@ content-type: application/json
 ###
 POST http://localhost:3001/api/anecdotes/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQzNDU2NCwiZXhwIjoxNjk2NDM4MTY0fQ.mD05RMUg18t7TbLAqnZ4RnFDConxrTHQhxW-z2mDssU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQ2OTQ3MCwiZXhwIjoxNjk2NDczMDcwfQ.1HhUpJ2ub6hq-8MrZ8VG0-bzhCaI_GLPJpmQPsF9zm4
 
 {
     "content": "Premature optimization is the root of all evil",
