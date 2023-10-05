@@ -73,7 +73,7 @@ app.use(
 // app.use(passport.authenticate("session"));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(middleware.tokenExtractor);
+//app.use(middleware.tokenExtractor); //moved the token extractor inside userextractor
 
 app.use("/", authRouter);
 app.use("/", anecdotesRouter);

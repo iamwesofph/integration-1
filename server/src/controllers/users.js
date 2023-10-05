@@ -5,92 +5,70 @@ const nodemailer = require("nodemailer");
 const hbs = require("nodemailer-express-handlebars");
 const config = require("../utils/config");
 
-usersRouter.post("/api/users", async (request, response) => {
+usersRouter.post("/api/users", async (request, response, next) => {
     const { displayName, name, password, email, source } = request.body;
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
     const verificationToken = await bcrypt.hash(email, saltRounds);
+    try {
+        const user = new User({
+            displayName,
+            name,
+            passwordHash,
+            email,
+            source,
+            isVerified: false,
+            verificationToken,
+            // uploadPhoto,
+        });
 
-    const user = new User({
-        displayName,
-        name,
-        passwordHash,
-        email,
-        source,
-        isVerified: false,
-        verificationToken,
-        // uploadPhoto,
-    });
+        const savedUser = await user.save();
 
-    const savedUser = await user.save();
+        const verificationLink = `http://localhost:3001/api/verify-email/?token=${verificationToken}`;
+        console.log(verificationLink);
 
-    const verificationLink = `http://localhost:3001/api/verify-email/?token=${verificationToken}`;
-    console.log(verificationLink);
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.PASSWORD,
+            },
+        });
 
-    const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: process.env.EMAIL,
-            pass: process.env.PASSWORD,
-        },
-    });
+        // Step 2
+        transporter.use(
+            "compile",
+            hbs({
+                viewEngine: "express-handlebars",
+                viewPath: "./",
+            })
+        );
 
-    // Step 2
-    transporter.use(
-        "compile",
-        hbs({
-            viewEngine: "express-handlebars",
-            viewPath: "./",
-        })
-    );
+        // Step 3
+        const mailOptions = {
+            from: "tabbnabbers@gmail.com", // TODO: email sender
+            to: email, // TODO: email receiver
+            subject: "Nodemailer - Test",
+            text: "Wooohooo it works!!",
+            template: "main",
+            context: {
+                name: displayName,
+                verificationLink: verificationLink,
+            }, // send extra values to template
+        };
 
-    // Step 3
-    const mailOptions = {
-        from: "tabbnabbers@gmail.com", // TODO: email sender
-        to: email, // TODO: email receiver
-        subject: "Nodemailer - Test",
-        text: "Wooohooo it works!!",
-        template: "main",
-        context: {
-            name: displayName,
-            verificationLink: verificationLink,
-        }, // send extra values to template
-    };
-
-    // transporter
-    //     .sendMail(mailOptions)
-    //     .then(() => {
-    //         return response.status(201).json({
-    //             msg: "you should receive an email",
-    //         });
-    //     })
-    //     .catch((error) => {
-    //         console.log("ERROR IN TRANSPORTER SENDMAIL");
-    //         return response.status(500).json({ error });
-    //     });
-
-    // Step 4
-    transporter.sendMail(mailOptions, (err, data) => {
-        if (err) {
-            console.log("Error occurs");
-            console.log(err);
-            return;
-        }
-        return console.log("Email sent!!!");
-    });
-
-    // transporter
-    //     .sendMail(mailOptions)
-    //     .then((info) => {
-    //         return response.status(201).json({
-    //             msg: "you should receive an email",
-    //             info: info.messageId,
-    //             preview: nodemailer.getTestMessageUrl(info),
-    //         });
-    //     })
-    //     .catch((error) => {
-    //         return response.status(500).json({ error });
-    //     });
+        // Step 4
+        transporter.sendMail(mailOptions, (err, data) => {
+            if (err) {
+                console.log("Error occurs");
+                console.log(err);
+                return;
+            }
+            return console.log("Email sent!!!");
+        });
+    } catch (error) {
+        next(error);
+    }
 });
 
 usersRouter.get("/api/users", async (request, response, next) => {

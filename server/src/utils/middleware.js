@@ -31,17 +31,25 @@ const errorHandler = (error, request, response, next) => {
     next(error);
 };
 
-const tokenExtractor = (request, response, next) => {
+// moved the token extractor inside user extractor
+// const tokenExtractor = (request, response, next) => {
+//     const authorization = request.get("authorization");
+//     console.log("MIDDLEWARE TOKENEXTRACTOR");
+//     console.log(authorization);
+//     if (authorization && authorization.startsWith("Bearer ")) {
+//         request.token = authorization.replace("Bearer ", "");
+//     }
+//     next(); // Continue to the next middleware or route handler
+// };
+
+const userExtractor = async (request, response, next) => {
     const authorization = request.get("authorization");
     console.log("MIDDLEWARE TOKENEXTRACTOR");
     console.log(authorization);
     if (authorization && authorization.startsWith("Bearer ")) {
         request.token = authorization.replace("Bearer ", "");
     }
-    next(); // Continue to the next middleware or route handler
-};
 
-const userExtractor = async (request, response, next) => {
     console.log(`USEREXTRACTOR ${request.token}`);
     try {
         const decodedToken = jwt.verify(request.token, process.env.SECRET);
@@ -65,6 +73,5 @@ module.exports = {
     requestLogger,
     unknownEndpoint,
     errorHandler,
-    tokenExtractor,
     userExtractor,
 };
