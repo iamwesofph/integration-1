@@ -190,7 +190,6 @@ router.get("/auth/login/success", function (req, res) {
     }
 });
 
-// Login button redirects to this route
 router.get(
     "/auth/google",
     passport.authenticate("google", {
@@ -198,7 +197,6 @@ router.get(
     })
 );
 
-// Google redirects to this route
 router.get(
     "/auth/google/callback",
     passport.authenticate("google", {
@@ -208,11 +206,8 @@ router.get(
     })
 );
 
-// Login button redirects to this route
-// router.get("/auth/facebook", passport.authenticate("facebook", { scope: ["public_profile"] }));
-router.get("/auth/facebook", passport.authenticate("facebook"));
+//router.get("/auth/facebook", passport.authenticate("facebook"));
 
-// Google redirects to this route
 router.get(
     "/auth/facebook/callback",
     passport.authenticate("facebook", {

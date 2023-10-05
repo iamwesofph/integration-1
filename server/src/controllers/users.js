@@ -1,12 +1,11 @@
 const bcrypt = require("bcrypt");
 const usersRouter = require("express").Router();
 const User = require("../models/user");
-const nodemailer = require("nodemailer");
-const hbs = require("nodemailer-express-handlebars");
 const config = require("../utils/config");
+const sendEmail = require("../utils/sendEmail");
 
 usersRouter.post("/api/users", async (request, response, next) => {
-    const { displayName, name, password, email, source } = request.body;
+    const { displayName, name, password, email, source, isVerified } = request.body;
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
     const verificationToken = await bcrypt.hash(email, saltRounds);
@@ -17,55 +16,18 @@ usersRouter.post("/api/users", async (request, response, next) => {
             passwordHash,
             email,
             source,
-            isVerified: false,
+            isVerified,
             verificationToken,
             // uploadPhoto,
         });
 
         const savedUser = await user.save();
+        response.json(savedUser);
 
         const verificationLink = `http://localhost:3001/api/verify-email/?token=${verificationToken}`;
         console.log(verificationLink);
 
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.PASSWORD,
-            },
-        });
-
-        // Step 2
-        transporter.use(
-            "compile",
-            hbs({
-                viewEngine: "express-handlebars",
-                viewPath: "./",
-            })
-        );
-
-        // Step 3
-        const mailOptions = {
-            from: "tabbnabbers@gmail.com", // TODO: email sender
-            to: email, // TODO: email receiver
-            subject: "Nodemailer - Test",
-            text: "Wooohooo it works!!",
-            template: "main",
-            context: {
-                name: displayName,
-                verificationLink: verificationLink,
-            }, // send extra values to template
-        };
-
-        // Step 4
-        transporter.sendMail(mailOptions, (err, data) => {
-            if (err) {
-                console.log("Error occurs");
-                console.log(err);
-                return;
-            }
-            return console.log("Email sent!!!");
-        });
+        // sendEmail(email, displayName, verificationLink);
     } catch (error) {
         next(error);
     }

@@ -6,10 +6,25 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: null,
     },
+    // email: {
+    //     type: String,
+    //     required: [true, "email required"],
+    //     unique: [true, "email already registered"],
+    // },
     email: {
         type: String,
-        required: [true, "email required"],
-        unique: [true, "email already registered"],
+        required: true,
+        validate: {
+            validator: async function (email) {
+                // If the user is verified, check for email uniqueness
+                if (this.isVerified) {
+                    const user = await mongoose.models.User.findOne({ email, isVerified: true });
+                    return !user; // Return true if no other verified user has this email
+                }
+                return true; // Return true for unverified users
+            },
+            message: "Email address must be unique for verified users.",
+        },
     },
     passwordHash: String,
     anecdotes: [
@@ -25,7 +40,10 @@ const userSchema = new mongoose.Schema({
     // uploadPhoto: File,
     source: { type: String, required: [true, "source not specified"] },
     lastVisited: { type: Date, default: new Date() },
-    isVerified: Boolean,
+    isVerified: {
+        type: Boolean,
+        default: false, // Set to false initially for unverified users
+    },
     verificationToken: String,
 });
 
@@ -38,6 +56,7 @@ userSchema.set("toJSON", {
         delete returnedObject.__v;
         // the passwordHash should not be revealed
         delete returnedObject.passwordHash;
+        delete returnedObject.verificationToken;
     },
 });
 

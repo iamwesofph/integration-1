@@ -75,11 +75,12 @@ POST http://localhost:3001/api/users/
 content-type: application/json
 
 {
-    "userName": "saw",
+    "displayName": "saw",
     "name": "Superuser",
     "password": "saw",
-    "email": "saw@gmail.com",
-    "source": "local"
+    "email": "anoyorenelyn@gmail.com",
+    "source": "local",
+    "isVerified": true
 }
 
 ###
