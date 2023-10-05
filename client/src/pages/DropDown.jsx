@@ -43,7 +43,8 @@ function DropdownMenu({ user, handleClickOutside, dropdownRef }) {
     // };
     const handleLogout = () => {
         // window.open(`${import.meta.env.VITE_SERVER_URL}/auth/logout`, "_self");
-        window.open("/auth/logout", "_self");
+        window.localStorage.removeItem("loggedUserToken"); //logs out locally signed up user (not using passport sessions)
+        window.open("/auth/logout", "_self"); // logs out oauth signed user (using passport sessions)
     };
 
     // Attach the click event listener when the dropdown is open

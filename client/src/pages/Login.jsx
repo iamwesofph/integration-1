@@ -1,10 +1,10 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useField } from "../hooks/";
+import loginService from "../services/login";
 import FacebookLogo from "../icons/facebooklogo.svg?react";
 import GoogleLogo from "../icons/googlelogo.svg?react";
 import GithubLogo from "../icons/githublogo.svg?react";
-import { Link } from "react-router-dom";
-import { useField } from "../hooks/";
-import loginService from "../services/login";
 
 export default function Login({ setNotification, setUserToken }) {
     const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +12,7 @@ export default function Login({ setNotification, setUserToken }) {
     // const [password, setPassword] = useState("");
     const email = useField("email");
     const password = useField("password");
+    const navigate = useNavigate();
 
     const googleAuth = () => {
         // window.open(`${import.meta.env.VITE_SERVER_URL}/auth/google`, "_self");
@@ -41,9 +42,6 @@ export default function Login({ setNotification, setUserToken }) {
             // Allow handleLogin to store user's token inside 1) state 2) browser's local storage 3) anecdoteService
             try {
                 //this validates the password against DB, and creates JWT token
-                console.log("HANDLENEXTLOGIN BODY");
-                console.log(email.value);
-                console.log(password.value);
                 const token = await loginService.login({ email: email.value, password: password.value });
 
                 setUserToken(token);
@@ -53,6 +51,8 @@ export default function Login({ setNotification, setUserToken }) {
                 // anecdoteService.setToken(user.token)
 
                 //redirect
+                navigate("/");
+                navigate(0);
             } catch (error) {
                 console.log(`HANDLENEXTLOGIN ERROR ${error}`);
             }

@@ -33,6 +33,8 @@ const errorHandler = (error, request, response, next) => {
 
 const tokenExtractor = (request, response, next) => {
     const authorization = request.get("authorization");
+    console.log("MIDDLEWARE TOKENEXTRACTOR");
+    console.log(authorization);
     if (authorization && authorization.startsWith("Bearer ")) {
         request.token = authorization.replace("Bearer ", "");
     }
@@ -40,7 +42,7 @@ const tokenExtractor = (request, response, next) => {
 };
 
 const userExtractor = async (request, response, next) => {
-    console.log(`START ${request.token}`);
+    console.log(`USEREXTRACTOR ${request.token}`);
     try {
         const decodedToken = jwt.verify(request.token, process.env.SECRET);
         console.log(decodedToken);

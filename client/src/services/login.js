@@ -10,4 +10,13 @@ const login = async (credentials) => {
     }
 };
 
-export default { login };
+const loginSuccess = async (headerConfig) => {
+    try {
+        const response = await axios.get(`${baseUrl}/success`, headerConfig);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export default { login, loginSuccess };

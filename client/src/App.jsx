@@ -8,6 +8,7 @@ import SignupForm from "./pages/SignupForm";
 import CreateNew from "./pages/CreateNew";
 import Login from "./pages/Login";
 import anecdoteService from "./services/anecdotes";
+import loginService from "./services/login";
 import About from "./pages/About";
 import axios from "axios";
 import VerificationSuccessful from "./pages/VerificationSuccessful";
@@ -22,7 +23,8 @@ function App() {
     const [userToken, setUserToken] = useState("");
 
     useEffect(() => {
-        const getUser = async () => {
+        const getUserOauth = async () => {
+            console.log("USEEFFECT OAUTH");
             try {
                 // const url = `${import.meta.env.VITE_SERVER_URL}/auth/login/success`;
                 const url = `/auth/login/success`;
@@ -51,7 +53,50 @@ function App() {
                 }
             }
         };
-        getUser();
+
+        const getUserLocal = async () => {
+            console.log("USEEFFECT LOCAL");
+            const loggedUserToken = window.localStorage.getItem("loggedUserToken");
+            console.log(loggedUserToken);
+            if (loggedUserToken) {
+                try {
+                    const headerConfig = {
+                        headers: {
+                            "Content-Type": "application/json",
+                            // Authorization: `Bearer ${loggedUserToken}`,
+                            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQ3OTI0OCwiZXhwIjoxNjk2NDgyODQ4fQ.7r50zQFjpBv1kkvLNE3iMToKrrJoSsohSLTmmSoQ5Hc",
+                        },
+                    };
+
+                    // const response = await axios.get(url, {
+                    //     headers: {
+                    //         Authorization: `Bearer ${token}`,
+                    //         "Content-Type": "application/json", // Set the Content-Type header if needed
+                    //     },
+                    // });
+                    // console.log("Response:", response.data);
+
+                    console.log(headerConfig);
+                    const data = await loginService.loginSuccess(headerConfig);
+
+                    console.log("USEEFFECT BODY");
+                    console.log(data);
+                    setUser(data.user);
+                } catch (error) {
+                    // console.log("USEEFFECT ERROR");
+                    // console.log(error);
+                    // next(error);
+                }
+
+                setNotification({ message: "Login successful!", type: "success" });
+                setTimeout(() => {
+                    setNotification(null);
+                }, 1000);
+                //   noteService.setToken(user.token)
+            }
+        };
+        getUserOauth();
+        getUserLocal();
     }, []);
 
     useEffect(() => {

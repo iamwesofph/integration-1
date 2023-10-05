@@ -96,7 +96,7 @@ content-type: application/json
 ###
 POST http://localhost:3001/api/anecdotes/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQ2OTQ3MCwiZXhwIjoxNjk2NDczMDcwfQ.1HhUpJ2ub6hq-8MrZ8VG0-bzhCaI_GLPJpmQPsF9zm4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQ3OTI0OCwiZXhwIjoxNjk2NDgyODQ4fQ.7r50zQFjpBv1kkvLNE3iMToKrrJoSsohSLTmmSoQ5Hc
 
 {
     "content": "Premature optimization is the root of all evil",
@@ -104,6 +104,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZ
     "info": "http://wiki.c2.com/?PrematureOptimization",
     "votes": 1
 }
+###
+POST http://localhost:3001/api/login-local/success
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQ3OTI0OCwiZXhwIjoxNjk2NDgyODQ4fQ.7r50zQFjpBv1kkvLNE3iMToKrrJoSsohSLTmmSoQ5Hc
+
 
 ###
 GET http://localhost:3001/api/verify-email/?token=$2b$10$bGdf1GZ6JfSZrFyRVceWueHYE7qHYAfjsGezPkQuU/I.OFEBdNbf6
