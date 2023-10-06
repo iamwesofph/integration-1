@@ -1,31 +1,44 @@
 const bcrypt = require("bcrypt");
 const usersRouter = require("express").Router();
+const { body } = require("express-validator");
+
 const User = require("../models/user");
 const config = require("../utils/config");
+const { validateRequestSchema } = require("../utils/middleware");
 
-usersRouter.post("/api/users", async (request, response, next) => {
-    const { displayName, name, password, email, source, isVerified } = request.body;
-    const saltRounds = 10;
-    const passwordHash = await bcrypt.hash(password, saltRounds);
-    const verificationToken = await bcrypt.hash(email, saltRounds);
-    try {
-        const user = new User({
-            displayName,
-            name,
-            passwordHash,
-            email,
-            source,
-            isVerified,
-            verificationToken,
-            // uploadPhoto,
-        });
+usersRouter.post(
+    "/api/users",
+    body("email").escape().notEmpty().withMessage("Email is required").isEmail().withMessage("Please provide a valid email"),
+    body("displayName").escape().trim().notEmpty().isString(),
+    body("password").escape().notEmpty().withMessage("Password is required").isLength({ min: 8 }).withMessage("Password length minimum of 8 characters"),
+    validateRequestSchema,
 
-        const savedUser = await user.save();
-        response.json(savedUser);
-    } catch (error) {
-        next(error);
+    async (request, response, next) => {
+        const { displayName, password, email } = request.body;
+        const saltRounds = 10;
+        const passwordHash = await bcrypt.hash(password, saltRounds);
+        const verificationToken = await bcrypt.hash(email, saltRounds);
+        const source = "local";
+        const isVerified = false;
+
+        try {
+            const user = new User({
+                email,
+                displayName,
+                passwordHash,
+                source,
+                isVerified,
+                verificationToken,
+                // uploadPhoto,
+            });
+
+            const savedUser = await user.save();
+            response.json(savedUser);
+        } catch (error) {
+            next(error);
+        }
     }
-});
+);
 
 usersRouter.get("/api/users", async (request, response, next) => {
     try {

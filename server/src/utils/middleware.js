@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const logger = require("./logger");
+const { validationResult } = require("express-validator");
 
 const requestLogger = (request, response, next) => {
     logger.info("Method:", request.method);
@@ -69,9 +70,18 @@ const userExtractor = async (request, response, next) => {
     }
 };
 
+const validateRequestSchema = (request, response, next) => {
+    const errors = validationResult(request);
+    if (!errors.isEmpty()) {
+        return response.status(400).json({ errors: errors.array() });
+    }
+    next();
+};
+
 module.exports = {
     requestLogger,
     unknownEndpoint,
     errorHandler,
     userExtractor,
+    validateRequestSchema,
 };

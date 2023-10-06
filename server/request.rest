@@ -71,16 +71,22 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:3001/api/users/
+POST http://localhost:3001/api/users?person=<b>john</b>
 content-type: application/json
 
 {
-    "displayName": "saw",
-    "name": "Superuser",
-    "password": "saw",
+    "displayName": "Wes",
+    "password": "12345678",
     "email": "anoyorenelyn@gmail.com",
-    "source": "local"
+    "source": "lsocal",
+    "isVerified": false
 }
+
+###
+GET http://localhost:3001/hello?person=%3Cb%3EJohn%3C/b%3E
+
+###
+GET http://localhost:3001/hello?person=<b>john</b>
 
 ###
 POST http://localhost:3001/api/anecdotes/

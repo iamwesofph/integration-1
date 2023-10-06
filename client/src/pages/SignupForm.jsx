@@ -9,9 +9,7 @@ const SignupForm = ({ setNotification }) => {
         displayName: "",
         email: "",
         password: "",
-        confirmPassword: "",
         // profilePhoto: null, // For file input, initialize with null
-        source: "local",
         // uploadPhoto: null,
     });
 

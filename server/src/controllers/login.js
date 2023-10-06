@@ -4,6 +4,7 @@ const loginRouter = require("express").Router();
 const User = require("../models/user");
 const middleware = require("../utils/middleware");
 
+// This route validates the giver password and email, sends the browser the JWT
 loginRouter.post("/api/login-local", async (request, response) => {
     const { email, password } = request.body;
     console.log(request.body);
@@ -28,6 +29,7 @@ loginRouter.post("/api/login-local", async (request, response) => {
     response.status(200).send(token);
 });
 
+// This route uses the JWT sent via header to find the associated user from DB and return the user in response
 loginRouter.get("/api/login-local/success", middleware.userExtractor, function (req, res) {
     console.log("LOGIN CONTROLLER");
     console.log(req.user);
