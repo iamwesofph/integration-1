@@ -2,15 +2,7 @@ let mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
 const userSchema = new mongoose.Schema({
-    providerId: {
-        type: String,
-        default: null,
-    },
-    // email: {
-    //     type: String,
-    //     required: [true, "email required"],
-    //     unique: [true, "email already registered"],
-    // },
+    providerId: String,
     email: {
         type: String,
         required: true,
@@ -40,10 +32,7 @@ const userSchema = new mongoose.Schema({
     // uploadPhoto: File,
     source: { type: String, required: [true, "source not specified"] },
     lastVisited: { type: Date, default: new Date() },
-    isVerified: {
-        type: Boolean,
-        default: false, // Set to false initially for unverified users
-    },
+    isVerified: Boolean,
     verificationToken: String,
 });
 
