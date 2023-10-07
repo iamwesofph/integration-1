@@ -17,6 +17,8 @@ const create = async (newObject) => {
         const response = await axios.post(baseUrl, newObject);
         return response.data;
     } catch (error) {
+        console.log("USERS SERVICE ERROR");
+        console.log(error);
         // Handle any errors here
         throw error;
     }

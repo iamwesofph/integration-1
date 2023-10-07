@@ -9,7 +9,7 @@ const { validateRequestSchema } = require("../utils/middleware");
 usersRouter.post(
     "/api/users",
     body("email").escape().notEmpty().withMessage("Email is required").isEmail().withMessage("Please provide a valid email"),
-    body("displayName").escape().trim().notEmpty().isString(),
+    body("displayName").escape().trim().notEmpty().withMessage("Display name is required"),
     body("password").escape().notEmpty().withMessage("Password is required").isLength({ min: 8 }).withMessage("Password length minimum of 8 characters"),
     validateRequestSchema,
 
