@@ -14,7 +14,7 @@
 // };
 
 // export default Notification;
-const Notification = ({ notification }) => {
+const Notification = ({ notification, setNotification }) => {
     if (notification === null) {
         return null;
     }
@@ -28,7 +28,16 @@ const Notification = ({ notification }) => {
 
     const colorClass = typeToColorClass[notification.type] || "text-gray-400";
 
-    return <div className={`w-full px-4 py-2 rounded-md bg-gray-800 border-black border ${colorClass} mb-4 whitespace-pre-line`}>{notification.message}</div>;
+    return (
+        <div>
+            <div className={`flex justify-between w-full px-4 py-2 text-justify rounded-md bg-gray-800 border-black border ${colorClass} mb-4 whitespace-pre-line`}>
+                <div>{notification.message}</div>
+                <button className="font-bold text-xl pl-4" onClick={() => setNotification(null)}>
+                    X
+                </button>
+            </div>
+        </div>
+    );
 };
 
 export default Notification;

@@ -32,9 +32,6 @@ function App() {
                 console.log(data.user);
                 setUser(data.user);
                 setNotification({ message: "Login successful!", type: "success" });
-                setTimeout(() => {
-                    setNotification(null);
-                }, 1000);
             } catch (err) {
                 // if there is no user found, or if there is duplicate record with another provider it will catch error
                 console.log(err);
@@ -47,9 +44,6 @@ function App() {
                     }, 7000);
                 } else {
                     setNotification({ message: "Hello! Login to gain complete access", type: "success" });
-                    setTimeout(() => {
-                        setNotification(null);
-                    }, 5000);
                 }
             }
         };

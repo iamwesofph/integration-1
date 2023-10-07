@@ -74,7 +74,7 @@ export default function RootLayout({ notification, type, user, setNotification }
             </header>
 
             <main className="h-full grow p-6">
-                <Notification notification={notification} />
+                <Notification notification={notification} setNotification={setNotification} />
                 <Outlet />
             </main>
 
