@@ -67,8 +67,9 @@ const SignupForm = ({ setNotification }) => {
                         </summary>
 
                         <div className="absolute bottom-2" role="menu" tabIndex="0">
-                            <label htmlFor="avatar_upload" className="whitespace-nowrap text-sm cursor-pointer bg-gray-800 rounded-md border border-gray-500 px-4 py-2 hover:bg-cyan-400" role="menuitem">
+                            <label htmlFor="upload_photo" className="whitespace-nowrap text-sm cursor-pointer bg-gray-800 rounded-md border border-gray-500 px-4 py-2 hover:bg-cyan-400">
                                 Upload a photo…
+                                <input className="hidden" type="file" id="upload_photo" />
                             </label>
                         </div>
                     </details>
