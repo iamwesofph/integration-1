@@ -66,7 +66,7 @@ const SignupForm = ({ setNotification }) => {
                             </div>
                         </summary>
 
-                        <div className="absolute bottom-2" role="menu">
+                        <div className="absolute bottom-2" role="menu" tabIndex="0">
                             <label htmlFor="avatar_upload" className="whitespace-nowrap text-sm cursor-pointer bg-gray-800 rounded-md border border-gray-500 px-4 py-2 hover:bg-cyan-400" role="menuitem">
                                 Upload a photo…
                             </label>
@@ -91,7 +91,7 @@ const SignupForm = ({ setNotification }) => {
                     </label>
 
                     <label>
-                        <span>Confirm Password</span>
+                        <span className="block text-sm font-medium text-white">Confirm Password</span>
                         <input
                             className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300"
                             name="confirmPassword"
@@ -104,10 +104,10 @@ const SignupForm = ({ setNotification }) => {
                         />
                     </label>
 
-                    <label>
+                    {/* <label>
                         <span className="block text-sm font-medium text-white">Profile Photo</span>
-                        {/* <input type="file" name="uploadPhoto" onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-40 h-40 rounded-full sm:text-sm focus:ring-1 disabled:bg-gray-200 disabled:text-gray-300 disabled:border-gray-500" disabled={isDisabled} /> */}
-                    </label>
+                        <input type="file" name="uploadPhoto" onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-40 h-40 rounded-full sm:text-sm focus:ring-1 disabled:bg-gray-200 disabled:text-gray-300 disabled:border-gray-500" disabled={isDisabled} />
+                    </label> */}
 
                     {isDisabled ? (
                         <button disabled className="flex items-center bg-cyan-400 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded focus:outline-none mr-2" type="submit">
@@ -118,9 +118,11 @@ const SignupForm = ({ setNotification }) => {
                             Processing
                         </button>
                     ) : (
-                        <button className="bg-cyan-400 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded focus:outline-none mr-2" type="submit">
-                            Sign Up
-                        </button>
+                        <div className="flex justify-end">
+                            <button className="bg-cyan-400 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded focus:outline-none mt-4" type="submit">
+                                Sign Up
+                            </button>
+                        </div>
                     )}
                 </form>
             </div>
