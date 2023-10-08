@@ -36,30 +36,42 @@ loginRouter.post("/api/login-local", async (request, response, next) => {
     console.log(`PASSWORD ${password}`);
 
     try {
-        const users = await User.find({ email });
-
-        if (!users || users.length === 0) {
-            return response.status(401).json({ error: "Invalid email or password" });
-        }
-
-        let userWithMatchingPassword = null;
-
-        for (const user of users) {
+        // Do not allow login of unverified user if that same email has a verified user
+        // If there is a verified user then use that accounts password.
+        const user = await User.findOne({ email, isVerified: true });
+        if (user) {
             const passwordCorrect = await bcrypt.compare(password, user.passwordHash);
             if (passwordCorrect) {
-                userWithMatchingPassword = user;
-                break; // Exit the loop once a matching password is found
+                console.log("Password is valid");
+                const userForToken = { id: user._id };
+                const token = jwt.sign(userForToken, process.env.SECRET, { expiresIn: 60 * 60 });
+                response.status(200).send(token);
+            } else {
+                return response.status(401).json({ error: "Invalid email or password" });
+            }
+        } else {
+            const users = await User.find({ email });
+            if (!users || users.length === 0) {
+                return response.status(401).json({ error: "Invalid email or password" });
+            }
+            let userWithMatchingPassword = null;
+            for (const user of users) {
+                const passwordCorrect = await bcrypt.compare(password, user.passwordHash);
+                if (passwordCorrect) {
+                    userWithMatchingPassword = user;
+                    break; // Exit the loop once a matching password is found
+                }
+            }
+
+            if (!userWithMatchingPassword) {
+                return response.status(401).json({ error: "Invalid email or password" });
+            } else {
+                console.log("Password is valid");
+                const userForToken = { id: userWithMatchingPassword._id };
+                const token = jwt.sign(userForToken, process.env.SECRET, { expiresIn: 60 * 60 });
+                response.status(200).send(token);
             }
         }
-
-        if (!userWithMatchingPassword) {
-            return response.status(401).json({ error: "Invalid email or password" });
-        }
-
-        console.log("Password is valid");
-        const userForToken = { id: userWithMatchingPassword._id };
-        const token = jwt.sign(userForToken, process.env.SECRET, { expiresIn: 60 * 60 });
-        response.status(200).send(token);
     } catch (error) {
         console.error(`Login error: ${error}`);
         next(error);

@@ -122,8 +122,8 @@ POST http://localhost:3001/api/login-local/
 content-type: application/json
 
 {
-    "email": "renelynwillhelpyou@gmail.com",
-    "password": "1234567"
+    "email": "anoyorenelyn@gmail.com",
+    "password": "11111111"
 }
 
 ###

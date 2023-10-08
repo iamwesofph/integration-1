@@ -50,6 +50,7 @@ export default function Login({ setNotification, setUserToken }) {
                 window.localStorage.setItem("loggedUserToken", token);
                 //to set token for anecdote service,
                 // anecdoteService.setToken(user.token)
+                setNotification(null);
                 navigate("/");
                 navigate(0);
             } catch (error) {

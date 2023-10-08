@@ -33,7 +33,7 @@ usersRouter.post(
             });
 
             const savedUser = await user.save();
-            response.json(savedUser);
+            return response.json(savedUser);
         } catch (error) {
             //MONGOOSE ERRORS go here when save fails
             return next(error);
