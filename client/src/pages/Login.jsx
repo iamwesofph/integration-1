@@ -54,6 +54,14 @@ export default function Login({ setNotification, setUserToken }) {
                 navigate("/");
                 navigate(0);
             } catch (error) {
+                if (error.response.data.errors) {
+                    const firstError = error.response.data.errors[0];
+                    setNotification({ message: firstError.msg, type: "error" });
+                    setIsDisabled(false);
+                    setTimeout(() => {
+                        setNotification(null);
+                    }, 5000);
+                }
                 console.log(`HANDLENEXTLOGIN ERROR ${error}`);
             }
         }

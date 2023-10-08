@@ -1,22 +1,31 @@
 let mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
+const emailValidator = require("email-validator");
 
 const userSchema = new mongoose.Schema({
     providerId: String,
     email: {
         type: String,
         required: true,
-        validate: {
-            validator: async function (email) {
-                // If the user is verified, check for email uniqueness
-                if (this.isVerified) {
-                    const user = await mongoose.models.User.findOne({ email, isVerified: true });
-                    return !user; // Return true if no other verified user has this email
-                }
-                return true; // Return true for unverified users
+        validate: [
+            {
+                validator: async function (email) {
+                    // If the user is verified, check for email uniqueness
+                    if (this.isVerified) {
+                        const user = await mongoose.models.User.findOne({ email, isVerified: true });
+                        return !user; // Return true if no other verified user has this email
+                    }
+                    return true; // Return true for unverified users
+                },
+                message: "Email address must be unique for verified users.",
             },
-            message: "Email address must be unique for verified users.",
-        },
+            {
+                validator: function (value) {
+                    return emailValidator.validate(value);
+                },
+                message: "Invalid email format",
+            },
+        ],
     },
     passwordHash: String,
     anecdotes: [

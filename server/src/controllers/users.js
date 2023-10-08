@@ -35,6 +35,7 @@ usersRouter.post(
             const savedUser = await user.save();
             response.json(savedUser);
         } catch (error) {
+            //MONGOOSE ERRORS go here when save fails
             next(error);
         }
     }
@@ -45,7 +46,6 @@ usersRouter.get("/api/users", async (request, response, next) => {
         const users = await User.find({}).populate("anecdotes");
         response.json(users);
     } catch (error) {
-        // response.status(500).json({ error: "An error occured while fetching users" });
         next(error);
     }
 });

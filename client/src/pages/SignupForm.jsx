@@ -8,7 +8,7 @@ const SignupForm = ({ setNotification }) => {
     const [formData, setFormData] = useState({
         displayName: "",
         email: "",
-        password: "",
+        password: "12345678",
         // profilePhoto: null, // For file input, initialize with null
         // uploadPhoto: null,
     });
@@ -46,16 +46,13 @@ const SignupForm = ({ setNotification }) => {
                 navigate(0);
             }, 5000);
         } catch (error) {
-            if (error.response.data.errors) {
-                const firstError = error.response.data.errors[0];
-                setNotification({ message: firstError.msg, type: "error" });
+            if (error.response.data.error) {
+                const firstError = error.response.data.error;
+                setNotification({ message: firstError, type: "error" });
                 setIsDisabled(false);
                 setTimeout(() => {
                     setNotification(null);
                 }, 5000);
-            } else {
-                // Handle other types of errors here
-                console.log(`HANDLESUBMIT ERROR ${error}`);
             }
         }
     };
@@ -71,7 +68,7 @@ const SignupForm = ({ setNotification }) => {
 
                 <label>
                     <span className="block text-sm font-medium text-white">Email Address</span>
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300 " placeholder="john@example.com" required disabled={isDisabled} />
+                    <input type="text" name="email" value={formData.email} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300 " placeholder="john@example.com" required disabled={isDisabled} />
                 </label>
 
                 <label>
@@ -86,6 +83,7 @@ const SignupForm = ({ setNotification }) => {
                         name="confirmPassword"
                         type="password"
                         // value={formData.confirmPassword}
+                        value="12345678"
                         // onChange={handleChange}
                         placeholder="Confirm Password"
                         required

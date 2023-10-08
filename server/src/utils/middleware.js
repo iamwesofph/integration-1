@@ -16,19 +16,23 @@ const unknownEndpoint = (request, response) => {
 };
 
 const errorHandler = (error, request, response, next) => {
-    logger.error(error.message);
-
     if (error.name === "CastError") {
+        console.log("MIDDLEWARE CAST ERROR malformatted id");
         return response.status(400).send({ error: "MIDDLEWARE CAST ERROR malformatted id" });
     } else if (error.name === "ValidationError") {
-        return response.status(400).json({ error: `MIDDLEWARE VALIDATION ERROR ${error.message}` });
+        console.log("MIDDLEWARE VALIDATION ERROR ");
+        return response.status(400).json({ error: `${error.message}` });
     } else if (error.name === "JsonWebTokenError") {
-        return response.status(401).json({ error: `MIDDLEWARE JSONWEBTOKEN ERROR ${error.message}` });
+        console.log("MIDDLEWARE JSONWEBTOKEN ERROR ");
+        return response.status(401).json({ error: `${error.message}` });
     } else if (error.name === "TokenExpiredError") {
-        return response.status(401).json({ error: `MIDDLEWARE TOKEN EXPIRED ERROR ${error.message}` });
+        console.log("MIDDLEWARE TOKEN EXPIRED ERROR ");
+        return response.status(401).json({ error: `${error.message}` });
     } else if (error.name === "ReferenceError") {
-        return response.status(401).json({ error: `MIDDLEWARE TOKEN REFERENCE ERROR ${error.message}` });
+        console.log("MIDDLEWARE TOKEN REFERENCE ERROR ");
+        return response.status(401).json({ error: `${error.message}` });
     }
+    // If the error is not one of the specified types, you can call next(error) to pass it to the default error handler.
     next(error);
 };
 
@@ -73,7 +77,8 @@ const userExtractor = async (request, response, next) => {
 const validateRequestSchema = (request, response, next) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
-        return response.status(400).json({ errors: errors.array() });
+        // EXPRESS VALIDATOR ERRORS go here. they respond with json
+        return response.status(400).json({ error: errors.array()[0].msg });
     }
     next();
 };
