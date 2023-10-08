@@ -71,15 +71,15 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:3001/api/users?person=<b>john</b>
+POST http://localhost:3001/api/users
 content-type: application/json
 
 {
-    "displayName": "Wes",
+    "displayName": "s ",
     "password": "12345678",
-    "email": "anoyorenelyn@gmail.com",
+    "email": "piuskj@hg@gmail.com",
     "source": "lsocal",
-    "isVerified": false
+    "isVerified": true
 }
 
 ###
@@ -111,7 +111,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZ
     "votes": 1
 }
 ###
-POST http://localhost:3001/api/login-local/success
+GET http://localhost:3001/api/login-local/success
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQ3OTI0OCwiZXhwIjoxNjk2NDgyODQ4fQ.7r50zQFjpBv1kkvLNE3iMToKrrJoSsohSLTmmSoQ5Hc
 
 ###
@@ -123,7 +123,7 @@ content-type: application/json
 
 {
     "email": "renelynwillhelpyou@gmail.com",
-    "password": "21"
+    "password": "1234567"
 }
 
 ###

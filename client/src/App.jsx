@@ -24,17 +24,17 @@ function App() {
 
     useEffect(() => {
         const getUserOauth = async () => {
-            console.log("USEEFFECT OAUTH");
+            // console.log("USEEFFECT OAUTH");
             try {
                 // const url = `${import.meta.env.VITE_SERVER_URL}/auth/login/success`;
                 const url = `/auth/login/success`;
                 const { data } = await axios.get(url, { withCredentials: true });
-                console.log(data.user);
+                // console.log(data.user);
                 setUser(data.user);
                 setNotification({ message: "Login successful!", type: "success" });
             } catch (err) {
                 // if there is no user found, or if there is duplicate record with another provider it will catch error
-                console.log(err);
+                // console.log(err);
 
                 if (err.response.data.message) {
                     // if (err.response.data.message && Array.isArray(err.response.data.message) && err.response.data.message.length > 0) {
@@ -49,7 +49,7 @@ function App() {
         };
 
         const getUserLocal = async () => {
-            console.log("USEEFFECT LOCAL");
+            // console.log("USEEFFECT LOCAL");
 
             if (loggedUserToken) {
                 try {
@@ -69,11 +69,11 @@ function App() {
                     // });
                     // console.log("Response:", response.data);
 
-                    console.log(headerConfig);
+                    // console.log(headerConfig);
                     const data = await loginService.loginSuccess(headerConfig);
 
-                    console.log("USEEFFECT BODY");
-                    console.log(data);
+                    // console.log("USEEFFECT BODY");
+                    // console.log(data);
                     setUser(data.user);
                 } catch (error) {
                     // console.log("USEEFFECT ERROR");

@@ -8,7 +8,7 @@ const SignupForm = ({ setNotification }) => {
     const [formData, setFormData] = useState({
         displayName: "",
         email: "",
-        password: "12345678",
+        password: "",
         // profilePhoto: null, // For file input, initialize with null
         // uploadPhoto: null,
     });
@@ -28,17 +28,8 @@ const SignupForm = ({ setNotification }) => {
         event.preventDefault();
         setIsDisabled(true);
 
-        const loggedUserToken = window.localStorage.getItem("loggedUserToken");
-        const headerConfig = {
-            //TODO
-            headers: {
-                Authorization: `Bearer ${loggedUserToken}`,
-                // Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQ3OTI0OCwiZXhwIjoxNjk2NDgyODQ4fQ.7r50zQFjpBv1kkvLNE3iMToKrrJoSsohSLTmmSoQ5Hc",
-            },
-        };
-
         try {
-            const x = await userService.create(formData);
+            await userService.create(formData);
             setNotification({ message: `You're signed up as ${formData.displayName}!  Redirecting to login page...`, type: "success" });
             setTimeout(() => {
                 setNotification(null);
@@ -82,13 +73,9 @@ const SignupForm = ({ setNotification }) => {
                         className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300"
                         name="confirmPassword"
                         type="password"
-                        // value={formData.confirmPassword}
-                        value="12345678"
-                        // onChange={handleChange}
                         placeholder="Confirm Password"
                         required
                         pattern={`^${formData.password}$`} // Use a regular expression to match the password
-                        // pattern={formData.password} // Check if it matches the password
                         title="Passwords must match" // Custom error message
                         disabled={isDisabled}
                     />

@@ -16,6 +16,8 @@ const unknownEndpoint = (request, response) => {
 };
 
 const errorHandler = (error, request, response, next) => {
+    console.log(error);
+
     if (error.name === "CastError") {
         console.log("MIDDLEWARE CAST ERROR malformatted id");
         return response.status(400).send({ error: "MIDDLEWARE CAST ERROR malformatted id" });
@@ -33,7 +35,10 @@ const errorHandler = (error, request, response, next) => {
         return response.status(401).json({ error: `${error.message}` });
     }
     // If the error is not one of the specified types, you can call next(error) to pass it to the default error handler.
-    next(error);
+    console.log("MIDDLEWARE ERROR IS NOT ONE OF THE SPECIFIED TYPES");
+    return response.status(500).json({ error: `(500) Internal server error:  ${error.message} \n Click here to send feedback to the devs.` });
+    // next(error);
+    // console.log("congraTS");
 };
 
 // moved the token extractor inside user extractor

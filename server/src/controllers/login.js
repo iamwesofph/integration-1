@@ -5,28 +5,29 @@ const User = require("../models/user");
 const middleware = require("../utils/middleware");
 
 // This route validates the giver password and email, sends the browser the JWT
-loginRouter.post("/api/login-local", async (request, response) => {
+loginRouter.post("/api/login-local", async (request, response, next) => {
     const { email, password } = request.body;
-    console.log(request.body);
-    const user = await User.findOne({ email });
-    console.log("USER");
-    console.log(user);
 
-    const passwordCorrect = user === null ? false : await bcrypt.compare(password, user.passwordHash);
+    // Find all users with the given email
+    // Compare if any of the users password hash match the password given.
+    // If one matches, then fetch ID of that user
+    const user = await User.findOne({ email }); //TODO fix bug of finding an unverified user
 
-    if (!(user && passwordCorrect)) {
-        return response.status(401).json({
-            error: "invalid email or password",
-        });
-    } else {
-        console.log("Password is valid");
+    try {
+        const passwordCorrect = user === null ? false : await bcrypt.compare(password, user.passwordHash);
+
+        if (!(user && passwordCorrect)) {
+            response.status(401).json({ error: "Invalid email or password" });
+        } else {
+            console.log("Password is valid");
+            const userForToken = { id: user._id };
+            const token = jwt.sign(userForToken, process.env.SECRET, { expiresIn: 60 * 60 });
+            // console.log(`LOGINROUTER TOKEN ${token}`);
+            response.status(200).send(token);
+        }
+    } catch (error) {
+        next(error);
     }
-
-    const userForToken = { id: user._id };
-
-    const token = jwt.sign(userForToken, process.env.SECRET, { expiresIn: 60 * 60 });
-    console.log(`LOGINROUTER TOKEN ${token}`);
-    response.status(200).send(token);
 });
 
 // This route uses the JWT sent via header to find the associated user from DB and return the user in response

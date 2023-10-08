@@ -36,7 +36,7 @@ usersRouter.post(
             response.json(savedUser);
         } catch (error) {
             //MONGOOSE ERRORS go here when save fails
-            next(error);
+            return next(error);
         }
     }
 );

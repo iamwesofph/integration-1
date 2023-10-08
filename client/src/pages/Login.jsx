@@ -43,26 +43,24 @@ export default function Login({ setNotification, setUserToken }) {
             try {
                 //this validates the password against DB, and creates JWT token
                 const token = await loginService.login({ email: email.value, password: password.value });
+                console.log(`LOGIN SERVICE NO ERROR ${token}`);
 
+                // Set state, storage and redirect only if API has no errors
                 setUserToken(token);
-
                 window.localStorage.setItem("loggedUserToken", token);
                 //to set token for anecdote service,
                 // anecdoteService.setToken(user.token)
-
-                //redirect
                 navigate("/");
                 navigate(0);
             } catch (error) {
-                if (error.response.data.errors) {
-                    const firstError = error.response.data.errors[0];
-                    setNotification({ message: firstError.msg, type: "error" });
+                if (error.response.data.error) {
+                    const firstError = error.response.data.error;
+                    setNotification({ message: firstError, type: "error" });
                     setIsDisabled(false);
                     setTimeout(() => {
                         setNotification(null);
                     }, 5000);
                 }
-                console.log(`HANDLENEXTLOGIN ERROR ${error}`);
             }
         }
     };
