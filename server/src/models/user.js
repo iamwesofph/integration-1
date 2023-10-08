@@ -1,5 +1,4 @@
 let mongoose = require("mongoose");
-const uniqueValidator = require("mongoose-unique-validator");
 const emailValidator = require("email-validator");
 
 const userSchema = new mongoose.Schema({
@@ -44,8 +43,6 @@ const userSchema = new mongoose.Schema({
     isVerified: Boolean,
     verificationToken: String,
 });
-
-userSchema.plugin(uniqueValidator);
 
 userSchema.set("toJSON", {
     transform: (document, returnedObject) => {
