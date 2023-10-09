@@ -95,7 +95,14 @@ export default function Login({ setNotification, setUserToken }) {
 
             <label className="block">
                 <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">Email</span>
-                <input {...email} reset="" name="email" className="mt-1 mb-2 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 disabled:bg-slate-300" placeholder="you@example.com" autoFocus disabled={showPassword ? true : false} />
+                <div className="relative">
+                    <input {...email} reset="" name="email" className="mt-1 mb-2 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 disabled:bg-slate-300" placeholder="you@example.com" autoFocus disabled={showPassword ? true : false} />
+                    {showPassword && (
+                        <button className="absolute right-4 top-2 text-sm text-cyan-600 hover:text-cyan-500" onClick={() => setShowPassword(false)}>
+                            Change
+                        </button>
+                    )}
+                </div>
             </label>
 
             {showPassword && (
