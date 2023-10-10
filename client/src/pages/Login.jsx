@@ -68,7 +68,7 @@ export default function Login({ setNotification, setUserToken }) {
 
     return (
         <section className="w-auto sm:w-[400px] p-6 text-black bg-white border border-gray-300 rounded-lg mx-auto">
-            <h1 className="mb-2">Login</h1>
+            <h1 className="mb-2 text-sm font-medium text-slate-700">Login</h1>
             <hr />
             <button className="flex justify-center items-center w-full text-center bg-white text-gray-600 text-lg font-semibold h-14 border border-gray-600 rounded-lg mb-4 hover:shadow-xl hover:scale-105" onClick={googleAuth}>
                 <div className="flex justify-center items-center mr-2 w-10 h-10 min-w-10 min-h-10">
@@ -91,7 +91,7 @@ export default function Login({ setNotification, setUserToken }) {
                 <span>Github</span>
             </button>
 
-            <hr />
+            <hr className="mb-2" />
 
             <label className="block">
                 <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">Email</span>
@@ -116,7 +116,7 @@ export default function Login({ setNotification, setUserToken }) {
                 {showPassword ? "Login" : "Next"}
             </button>
 
-            <p className="mt-4">
+            <p className="mt-4 text-sm font-medium text-slate-700">
                 Don't have an account?{" "}
                 <Link className="underline hover:text-cyan-400" to="/signup">
                     Sign up

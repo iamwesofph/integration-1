@@ -6,14 +6,41 @@ const User = require("../models/user");
 const config = require("../utils/config");
 const { validateRequestSchema } = require("../utils/middleware");
 
+const multer = require("multer");
+const path = require("path");
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "uploads");
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+        cb(null, `${file.fieldname}-${uniqueSuffix}${path.extname(file.originalname)}`);
+    },
+});
+
+const upload = multer({ storage: storage });
+
+usersRouter.post("/profile", upload.single("image"), function (req, res, next) {
+    // req.file is the `avatar` file
+    // req.body will hold the text fields, if there were any
+    console.log(req.file);
+    // res.send("Image Uploaded");
+    res.status(200).json(req.file);
+});
+
 usersRouter.post(
     "/api/users",
+
     body("email").escape().notEmpty().withMessage("Email is required").isEmail().withMessage("Please provide a valid email"),
     body("displayName").escape().trim().notEmpty().withMessage("Display name is required"),
     body("password").escape().notEmpty().withMessage("Password is required").isLength({ min: 8 }).withMessage("Password length minimum of 8 characters"),
     validateRequestSchema,
 
+    upload.single("image"),
+
     async (request, response, next) => {
+        console.log(request.file);
         const { displayName, password, email } = request.body;
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
