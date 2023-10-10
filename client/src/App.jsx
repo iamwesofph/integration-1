@@ -13,6 +13,7 @@ import About from "./pages/About";
 import axios from "axios";
 import VerificationSuccessful from "./pages/VerificationSuccessful";
 import VerificationNothing from "./pages/VerificationNothing";
+import UpdateProfile from "./pages/UpdateProfile";
 
 axios.defaults.withCredentials = true;
 
@@ -43,7 +44,7 @@ function App() {
                         setNotification(null);
                     }, 7000);
                 } else {
-                    setNotification({ message: "Hello! Login to gain complete access", type: "success" });
+                    setNotification({ message: "Hello! Login to gain complete access", type: "info" });
                 }
             }
         };
@@ -57,7 +58,6 @@ function App() {
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${loggedUserToken}`,
-                            // Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQ3OTI0OCwiZXhwIjoxNjk2NDgyODQ4fQ.7r50zQFjpBv1kkvLNE3iMToKrrJoSsohSLTmmSoQ5Hc",
                         },
                     };
 
@@ -72,20 +72,18 @@ function App() {
                     // console.log(headerConfig);
                     const data = await loginService.loginSuccess(headerConfig);
 
-                    // console.log("USEEFFECT BODY");
-                    // console.log(data);
                     setUser(data.user);
+                    setNotification({ message: "Login successful!", type: "success" });
+                    setTimeout(() => {
+                        setNotification(null);
+                    }, 10000);
                 } catch (error) {
-                    // console.log("USEEFFECT ERROR");
-                    // console.log(error);
+                    setNotification({ message: "Login to gain complete access", type: "info" });
+                    setTimeout(() => {
+                        setNotification(null);
+                    }, 10000);
                     // next(error);
                 }
-
-                setNotification({ message: "Login successful!", type: "success" });
-                setTimeout(() => {
-                    setNotification(null);
-                }, 1000);
-                //   noteService.setToken(user.token)
             }
         };
 
@@ -135,6 +133,7 @@ function App() {
                 <Route path="signup" element={<SignupForm setNotification={setNotification} />}></Route>
                 <Route path="verification-successful" element={<VerificationSuccessful />}></Route>
                 <Route path="verification-nothing" element={<VerificationNothing />}></Route>
+                <Route path="update-profile" element={<UpdateProfile />}></Route>
                 <Route path="*" element={<NotFound />} />
             </Route>
         )

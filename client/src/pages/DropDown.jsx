@@ -6,6 +6,7 @@ import MessengerIcon from "../icons/messenger.svg?react";
 import PlusIcon from "../icons/plus.svg?react";
 import CogIcon from "../icons/cog.svg?react";
 import emailService from "../services/emailService";
+import { useNavigate } from "react-router-dom";
 
 export default function DropDown({ user, setNotification }) {
     const [open, setOpen] = useState(false);
@@ -43,6 +44,8 @@ function DropdownMenu({ user, handleClickOutside, dropdownRef, setNotification, 
     //     }
     // };
     // Remove the event listener when the dropdown is closed
+    const navigate = useNavigate();
+
     useEffect(() => {
         return () => {
             document.removeEventListener("mouseup", handleClickOutside);
@@ -60,18 +63,22 @@ function DropdownMenu({ user, handleClickOutside, dropdownRef, setNotification, 
         document.addEventListener("mouseup", handleClickOutside);
     }
 
+    const manageAccount = () => {
+        setOpen(!open); // Close the dropdown menu
+        // navigate("/update-profile");
+        navigate("/update-profile");
+        // navigate(0);
+    };
+
     const verifyEmail = async () => {
         const loggedUserToken = window.localStorage.getItem("loggedUserToken");
         const headerConfig = {
-            headers: {
-                Authorization: `Bearer ${loggedUserToken}`,
-                // Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQ3OTI0OCwiZXhwIjoxNjk2NDgyODQ4fQ.7r50zQFjpBv1kkvLNE3iMToKrrJoSsohSLTmmSoQ5Hc",
-            },
+            headers: { Authorization: `Bearer ${loggedUserToken}` },
         };
 
         try {
             await emailService.sendEmail(headerConfig);
-            setOpen(!open);
+            setOpen(!open); // Close the dropdown menu
             setNotification({ message: `Sent verification email to: ${user.email}`, type: "info" });
             setTimeout(() => {
                 setNotification(null);
@@ -102,7 +109,9 @@ function DropdownMenu({ user, handleClickOutside, dropdownRef, setNotification, 
                 </div>
                 <div>
                     {user.isVerified ? (
-                        <button className="px-4 py-2 bg-slate-700 rounded-lg hover:bg-slate-500 transition-colors">Manage your account</button>
+                        <button className="px-4 py-2 bg-slate-700 rounded-lg hover:bg-slate-500 transition-colors" onClick={() => manageAccount()}>
+                            Manage your account
+                        </button>
                     ) : (
                         <button className="px-4 py-2 bg-slate-700 rounded-lg hover:bg-slate-500 transition-colors text-red-500" onClick={() => verifyEmail()}>
                             Verify email

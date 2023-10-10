@@ -5,11 +5,20 @@ const ProfilePhotoUpload = () => {
     const [selectedImage, setSelectedImage] = useState(null);
 
     const handleImageUpload = (event) => {
-        const file = event.target.files[0];
-        console.log(file);
+        const files = event.target.files;
+
+        if (files.length === 0) {
+            // User canceled the file selection, do nothing or show a message
+            console.log("File upload canceled.");
+            return;
+        }
+
+        const file = files[0];
+
         try {
             setSelectedImage(URL.createObjectURL(file));
         } catch (error) {
+            // Handle any errors that occur during object URL creation
             console.error("Error creating object URL:", error);
         }
     };
@@ -28,7 +37,7 @@ const ProfilePhotoUpload = () => {
                     </div>
                 </div>
             </summary>
-            <div className="rounded-md absolute bottom-8 translate-y-full" role="menu">
+            <div className="rounded-md absolute bottom-36 translate-y-full" role="menu">
                 <div className="rounded-md flex flex-col items-start border border-gray-500 bg-gray-800 overflow-hidden">
                     <label htmlFor="upload_photo" className="select-none whitespace-nowrap text-sm cursor-pointer w-full text-left px-4 py-2 hover:bg-cyan-400 hover:text-slate-700" tabIndex="1">
                         Upload a photo…

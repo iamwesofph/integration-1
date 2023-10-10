@@ -37,10 +37,7 @@ usersRouter.post(
     body("password").escape().notEmpty().withMessage("Password is required").isLength({ min: 8 }).withMessage("Password length minimum of 8 characters"),
     validateRequestSchema,
 
-    upload.single("image"),
-
     async (request, response, next) => {
-        console.log(request.file);
         const { displayName, password, email } = request.body;
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
