@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useField } from "../hooks/";
 import loginService from "../services/login";
@@ -66,6 +66,13 @@ export default function Login({ setNotification, setUserToken }) {
         }
     };
 
+    const handleEnterPress = (event) => {
+        if (event.key === "Enter") {
+            handleNextLogin();
+            // setShowPassword(true);
+        }
+    };
+
     return (
         <section className="w-auto sm:w-[400px] p-6 text-black bg-white border border-gray-300 rounded-lg mx-auto">
             <h1 className="mb-2 text-sm font-medium text-slate-700">Login</h1>
@@ -96,7 +103,7 @@ export default function Login({ setNotification, setUserToken }) {
             <label className="block">
                 <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">Email</span>
                 <div className="relative">
-                    <input {...email} reset="" name="email" className="mt-1 mb-2 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 disabled:bg-slate-300" placeholder="you@example.com" autoFocus disabled={showPassword ? true : false} />
+                    <input {...email} reset="" name="email" className="mt-1 mb-2 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 disabled:bg-slate-300" placeholder="you@example.com" autoFocus disabled={showPassword ? true : false} onKeyDown={handleEnterPress} />
                     {showPassword && (
                         <button className="absolute right-4 top-2 text-sm text-cyan-600 hover:text-cyan-500" onClick={() => setShowPassword(false)}>
                             Change
@@ -108,7 +115,7 @@ export default function Login({ setNotification, setUserToken }) {
             {showPassword && (
                 <label className="block">
                     <span className="block text-sm font-medium text-slate-700">Password</span>
-                    <input {...password} reset="" name="password" className="mt-1 mb-2 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="You@1234" />
+                    <input {...password} reset="" name="password" className="mt-1 mb-2 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1" placeholder="You@1234" autoFocus onKeyDown={handleEnterPress} />
                 </label>
             )}
 
