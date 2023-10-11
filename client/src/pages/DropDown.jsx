@@ -102,11 +102,12 @@ function DropdownMenu({ user, handleClickOutside, dropdownRef, setNotification, 
             ref={dropdownRef}
         >
             <div className="flex flex-col items-center gap-6 py-6">
-                <div>{user.profilePhoto ? <img className="rounded-full w-14 border border-white" src={user.profilePhoto} alt="profile photo" referrerPolicy="no-referrer" /> : <CogIcon className="w-6 h-6 fill-current m-3" />}</div>
+                <div>{user.profilePhoto ? <img className="rounded-full h-14 w-14 object-cover border border-white" src={user.profilePhoto} alt="profile photo" referrerPolicy="no-referrer" /> : <CogIcon className="w-6 h-6 fill-current m-3" />}</div>
                 <div className="flex flex-col items-center justify-center">
                     <span className="text-lg font-bold">{user.firstName || user.displayName}</span>
                     <h3 className="text-xs">{user.email}</h3>
                 </div>
+
                 <div>
                     {user.isVerified ? (
                         <button className="px-4 py-2 bg-slate-700 rounded-lg hover:bg-slate-500 transition-colors" onClick={() => manageAccount()}>

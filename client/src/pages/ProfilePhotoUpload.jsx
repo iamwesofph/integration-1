@@ -34,6 +34,7 @@ const ProfilePhotoUpload = ({ setNotification }) => {
         const file = files[0];
         try {
             setSelectedImage(URL.createObjectURL(file));
+            URL.revokeObjectURL(selectedImage);
         } catch (error) {
             console.error("Error creating object URL:", error);
         }

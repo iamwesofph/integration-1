@@ -51,6 +51,9 @@ app.use(
 
 // app.set("views", path.join(__dirname, "views"));
 // app.use(express.static("dist"));
+// Serve images like profile photos
+// app.use(express.static("uploads"));
+app.use("/static", express.static("uploads"));
 
 // app.use(middleware.requestLogger);
 app.use((req, res, next) => {

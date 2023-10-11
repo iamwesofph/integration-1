@@ -1,20 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import userService from "../services/users";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../icons/spinner.svg?react";
 import ProfilePhotoUpload from "./ProfilePhotoUpload";
 
-const UpdateProfile = ({ setNotification }) => {
+const UpdateProfile = ({ user, setNotification }) => {
     const navigate = useNavigate();
 
     const [isDisabled, setIsDisabled] = useState(false);
     const [formData, setFormData] = useState({
         displayName: "",
         email: "",
-        password: "",
+        // password: "",
         // profilePhoto: null, // For file input, initialize with null
         // uploadPhoto: null,
     });
+
+    useEffect(() => {
+        // Set the initial values of email and displayName from the user object
+        if (user) {
+            setFormData({
+                displayName: user.displayName,
+                email: user.email,
+            });
+        }
+    }, [user]);
 
     const handleChange = (event) => {
         const { name, value, type, files } = event.target;
@@ -64,7 +74,7 @@ const UpdateProfile = ({ setNotification }) => {
 
                     <label>
                         <span className="block text-sm font-medium text-white">Display Name</span>
-                        <input type="text" name="displayName" value={formData.displayName} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300" placeholder="John Wick" autoComplete="displayName" required autoFocus pattern=".*\S+.*" title="Display name is required" disabled={isDisabled} />
+                        <input type="text" name="displayName" value={formData.displayName} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300" placeholder="John Wick" autoComplete="displayName" required autoFocus pattern=".*\S+.*" title="Display name is required" disabled={isDisabled} spellcheck="false" />
                     </label>
 
                     <label>
