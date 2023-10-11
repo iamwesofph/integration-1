@@ -21,10 +21,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-usersRouter.post("/profile", upload.single("image"), function (req, res, next) {
+usersRouter.post("/api/profile", upload.single("image"), function (req, res, next) {
     // req.file is the `avatar` file
     // req.body will hold the text fields, if there were any
-    console.log(req.file);
+    console.log(`FILE UPLOADED: ${req.file}`);
     // res.send("Image Uploaded");
     res.status(200).json(req.file);
 });
