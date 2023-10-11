@@ -55,7 +55,7 @@ const UpdateProfile = ({ setNotification }) => {
         <>
             <h2 className="text-2xl mb-8 text-white text-center">Update Profile</h2>
             <div className="flex justify-around">
-                <ProfilePhotoUpload />
+                <ProfilePhotoUpload setNotification={setNotification} />
                 <form className="sm:w-[400px] mx-auto" onSubmit={handleSubmit}>
                     <label>
                         <span className="block text-sm font-medium text-white">Email Address</span>

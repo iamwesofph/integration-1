@@ -4,45 +4,78 @@ import EditPen from "../icons/editPen.svg?react";
 import axios from "axios";
 import FormData from "form-data";
 
-const ProfilePhotoUpload = () => {
+const ProfilePhotoUpload = ({ setNotification }) => {
     const [selectedImage, setSelectedImage] = useState(null);
-    const [xfile, setxFile] = useState(null);
-    const [blob, setBlob] = useState(null);
 
-    async function uploadImage() {
-        const form = new FormData();
-        const url = "http://localhost:3001/api/profile";
+    // async function uploadImage() {
+    //     const form = new FormData();
+    //     const url = "http://localhost:3001/api/profile";
 
-        // Append the selected image to the FormData object
-        form.append("image", blob, "exampl.jpg");
+    //     form.append("image", blob, "image.jpg");
 
-        const headers = { "Content-Type": "multipart/form-data" };
+    //     const headers = { "Content-Type": "multipart/form-data" };
 
-        try {
-            const response = await axios.post(url, form, { headers: headers });
-            console.log(response.data);
-        } catch (error) {
-            console.error("Failure", error);
-        }
-    }
+    //     try {
+    //         const response = await axios.post(url, form, { headers: headers });
+    //         console.log(response.data);
+    //     } catch (error) {
+    //         console.error("Failure", error);
+    //     }
+    // }
 
-    const handleImageUpload = (event) => {
+    const handleImageUpload = async (event) => {
+        // Display uploaded image to the DOM
         const files = event.target.files;
-
         if (files.length === 0) {
             // User canceled the file selection, do nothing or show a message
             console.log("File upload canceled.");
             return;
         }
-
         const file = files[0];
-        setBlob(file);
-        // Display uploaded image to the DOM
         try {
             setSelectedImage(URL.createObjectURL(file));
         } catch (error) {
-            // Handle any errors that occur during object URL creation
             console.error("Error creating object URL:", error);
+        }
+
+        // Confirm uploading of image to storage and database
+        const text = "Are you sure you want to set this photo as your current avatar?";
+
+        if (confirm(text) === true) {
+            const form = new FormData();
+            try {
+                form.append("image", file, "image.jpg");
+                // Save the new profile photo to the file storage
+                const response = await axios.post("/api/profile", form, { headers: { "Content-Type": "multipart/form-data" } });
+                //TODO Delete the old profile photo from the file storage
+                console.log(response.data);
+                setNotification({ message: "Your profile picture has been updated", type: "success" });
+                setTimeout(() => {
+                    setNotification(null);
+                }, 5000);
+            } catch (error) {
+                console.error("Failure", error);
+            }
+        } else {
+            return;
+        }
+    };
+
+    const handleImageRemove = () => {
+        const text = "Are you sure you want to reset your current avatar?";
+        if (confirm(text) === true) {
+            setSelectedImage(null);
+            try {
+                //TODO Delete the old profile photo from the file storage
+                setNotification({ message: "Your profile picture has been removed", type: "success" });
+                setTimeout(() => {
+                    setNotification(null);
+                }, 5000);
+            } catch (error) {
+                console.error("Failure", error);
+            }
+        } else {
+            return;
         }
     };
 
@@ -67,13 +100,13 @@ const ProfilePhotoUpload = () => {
                                 Upload a photo…
                                 <input name="image" className="hidden" type="file" id="upload_photo" accept="image/*" onChange={handleImageUpload} />
                             </label>
-                            <button type="button" className="absolute -bottom-20 hover:bg-cyan-400 w-20 h-10 select-none border border-white whitespace-nowrap text-sm cursor-pointer text-left px-4 py-2 hover-bg-cyan-400 hover-text-slate-700" onClick={uploadImage}>
+                            {/* <button type="button" className="absolute -bottom-20 hover:bg-cyan-400 w-20 h-10 select-none border border-white whitespace-nowrap text-sm cursor-pointer text-left px-4 py-2 hover-bg-cyan-400 hover-text-slate-700" onClick={uploadImage}>
                                 Submit
-                            </button>
+                            </button> */}
                         </form>
 
                         {selectedImage && (
-                            <label htmlFor="remove_photo" className="select-none whitespace-nowrap text-sm cursor-pointer w-full text-left px-4 py-2 hover:bg-cyan-400 hover:text-slate-700" onClick={() => setSelectedImage(null)} tabIndex="0">
+                            <label htmlFor="remove_photo" className="select-none whitespace-nowrap text-sm cursor-pointer w-full text-left px-4 py-2 hover:bg-cyan-400 hover:text-slate-700" onClick={handleImageRemove} tabIndex="0">
                                 Remove photo
                             </label>
                         )}
