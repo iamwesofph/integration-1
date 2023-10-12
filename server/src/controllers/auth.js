@@ -174,22 +174,26 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-    done(null, user);
+    // done(null, user);
+    done(null, { id: user.id }); // Save to the session only the unchanging values like the primary key. Use it to access other data from DB
 });
 
 passport.deserializeUser((user, done) => {
     done(null, user);
 });
 
-router.get("/auth/login/success", function (req, res) {
+// This is not official
+router.get("/auth/login/success", async (req, res) => {
+    // req.user comes from the sessionDB, created by serializeUser
     if (req.user) {
-        res.status(200).json({
-            error: false,
-            message: "Successfully Logged In",
-            user: req.user,
-        });
+        try {
+            const loggedUser = await User.findOne({ _id: req.user.id });
+            res.status(200).json(loggedUser);
+        } catch (error) {
+            res.status(400).json({ error: true, message: req.session.messages });
+        }
     } else if (!req.user) {
-        res.status(403).json({ error: true, message: req.session.messages });
+        res.status(401).json({ error: true, message: req.session.messages });
     }
 });
 
@@ -211,14 +215,14 @@ router.get(
 
 //router.get("/auth/facebook", passport.authenticate("facebook"));
 
-router.get(
-    "/auth/facebook/callback",
-    passport.authenticate("facebook", {
-        failureRedirect: `${config.FRONTEND_URL}/login`,
-        successRedirect: config.FRONTEND_URL,
-        failureMessage: true, // Capture failure message
-    })
-);
+// router.get(
+//     "/auth/facebook/callback",
+//     passport.authenticate("facebook", {
+//         failureRedirect: `${config.FRONTEND_URL}/login`,
+//         successRedirect: config.FRONTEND_URL,
+//         failureMessage: true, // Capture failure message
+//     })
+// );
 
 router.get("/auth/github", passport.authenticate("github", { scope: ["user:email"] }));
 

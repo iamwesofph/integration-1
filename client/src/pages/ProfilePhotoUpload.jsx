@@ -94,20 +94,8 @@ const ProfilePhotoUpload = ({ setNotification, user, profilePhoto }) => {
         if (confirm(text) === true) {
             setSelectedImage(null);
             try {
-                //TODO Delete the old profile photo from the file storage
-                const loggedUserToken = window.localStorage.getItem("loggedUserToken");
-
-                if (loggedUserToken) {
-                    console.log();
-                    const headerConfig = {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${loggedUserToken}`,
-                        },
-                    };
-                    const userData = await userService.update(user.id, { profilePhoto: null }, headerConfig);
-                    console.log(userData);
-                }
+                const userData = await userService.update(user.id, { profilePhoto: null });
+                console.log(userData);
                 setNotification({ message: "Your profile picture has been removed", type: "success" });
                 setTimeout(() => {
                     setNotification(null);
@@ -146,9 +134,6 @@ const ProfilePhotoUpload = ({ setNotification, user, profilePhoto }) => {
                                 Upload a photo…
                                 <input name="image" className="hidden" type="file" id="upload_photo" accept="image/*" onChange={handleImageUpload} onClick={onInputClick} />
                             </label>
-                            {/* <button type="button" className="absolute -bottom-20 hover:bg-cyan-400 w-20 h-10 select-none border border-white whitespace-nowrap text-sm cursor-pointer text-left px-4 py-2 hover-bg-cyan-400 hover-text-slate-700" onClick={uploadImage}>
-                                Submit
-                            </button> */}
                         </form>
 
                         {selectedImage && (

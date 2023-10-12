@@ -7,6 +7,7 @@ import PlusIcon from "../icons/plus.svg?react";
 import CogIcon from "../icons/cog.svg?react";
 import emailService from "../services/emailService";
 import { useNavigate } from "react-router-dom";
+import noProfilePhoto from "../icons/noprofile.jpg";
 
 export default function DropDown({ user, setNotification }) {
     const [open, setOpen] = useState(false);
@@ -102,7 +103,8 @@ function DropdownMenu({ user, handleClickOutside, dropdownRef, setNotification, 
             ref={dropdownRef}
         >
             <div className="flex flex-col items-center gap-6 py-6">
-                <div>{user.profilePhoto ? <img className="rounded-full h-14 w-14 object-cover border border-white" src={`${user.profilePhoto}?${new Date().getTime()}`} alt="profile photo" referrerPolicy="no-referrer" /> : <CogIcon className="w-6 h-6 fill-current m-3" />}</div>
+                <img className="rounded-full h-14 w-14 object-cover border border-white" src={user.profilePhoto || noProfilePhoto} alt="profile photo" referrerPolicy="no-referrer" />
+                {/* <div>{user.profilePhoto ? <img className="rounded-full h-14 w-14 object-cover border border-white" src={`${user.profilePhoto}?${new Date().getTime()}`} alt="profile photo" referrerPolicy="no-referrer" /> : <CogIcon className="w-6 h-6 fill-current m-3" />}</div> */}
                 {/* src={`${user.profilePhoto}?${new Date().getTime()}`}  */}
                 {/* This is a hacky technique to prevent cache related error */}
                 <div className="flex flex-col items-center justify-center">

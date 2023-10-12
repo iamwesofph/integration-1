@@ -29,8 +29,8 @@ function App() {
             try {
                 // const url = `${import.meta.env.VITE_SERVER_URL}/auth/login/success`;
                 const { data } = await axios.get("/auth/login/success", { withCredentials: true });
-                // console.log(data.user);
-                setUser(data.user);
+                console.log(data);
+                setUser(data);
                 setNotification({ message: "Login successful!", type: "success" });
             } catch (err) {
                 // if there is no user found, or if there is duplicate record with another provider it will catch error

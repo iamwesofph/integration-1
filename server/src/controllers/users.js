@@ -94,6 +94,8 @@ usersRouter.put("/api/users/:id", (request, response, next) => {
 
     const user = {
         displayName: body.displayName,
+        lastName: body.lastName,
+        firstName: body.firstName,
         profilePhoto: body.profilePhoto,
     };
 
