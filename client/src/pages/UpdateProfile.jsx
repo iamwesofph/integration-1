@@ -22,6 +22,8 @@ const UpdateProfile = ({ user, setNotification, setUser }) => {
                 displayName: user.displayName,
                 email: user.email,
                 profilePhoto: user.profilePhoto,
+                firstName: user.firstName,
+                lastName: user.lastName,
             });
         }
     }, [user]);
@@ -68,26 +70,47 @@ const UpdateProfile = ({ user, setNotification, setUser }) => {
                 <form className="sm:w-[400px] mx-auto h-40" onSubmit={handleSubmit}>
                     <label>
                         <span className="block text-sm font-medium text-white">Email Address</span>
-                        <input type="text" name="email" value={formData.email} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300 " placeholder="john@example.com" required disabled />
+                        <input type="text" name="email" value={formData.email || ""} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300 " placeholder="john@example.com" required disabled />
                     </label>
 
+                    {user && user.displayName && (
+                        <label>
+                            <span className="block text-sm font-medium text-white">Display Name</span>
+                            <div className="relative">
+                                <input type="text" name="displayName" value={formData.displayName || ""} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300" placeholder="John Wick" autoComplete="displayName" required autoFocus pattern=".*\S+.*" title="Display name is required" disabled={displayNameDisabled} spellCheck="false" />
+                                <button type="button" className="absolute top-[9px] right-4 text-sm text-gray-600 hover:text-cyan-600" onClick={() => setDisplayNameDisabled(false)}>
+                                    Change
+                                </button>
+                            </div>
+                        </label>
+                    )}
+
                     <label>
-                        <span className="block text-sm font-medium text-white">Display Name</span>
+                        <span className="block text-sm font-medium text-white">Last Name</span>
                         <div className="relative">
-                            <input type="text" name="displayName" value={formData.displayName} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300" placeholder="John Wick" autoComplete="displayName" required autoFocus pattern=".*\S+.*" title="Display name is required" disabled={displayNameDisabled} spellCheck="false" />
-                            <button type="button" className="absolute top-[9px] right-4 text-sm text-gray-600 hover:text-cyan-600" onClick={() => setDisplayNameDisabled(false)}>
+                            <input type="text" name="lastName" value={formData.lastName || ""} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300" placeholder="John Wick" autoComplete="displayName" required autoFocus pattern=".*\S+.*" title="Display name is required" disabled spellCheck="false" />
+                            {/* <button type="button" className="absolute top-[9px] right-4 text-sm text-gray-600 hover:text-cyan-600" onClick={() => setDisplayNameDisabled(false)}>
                                 Change
-                            </button>
+                            </button> */}
+                        </div>
+                    </label>
+                    <label>
+                        <span className="block text-sm font-medium text-white">First Name</span>
+                        <div className="relative">
+                            <input type="text" name="firstName" value={formData.firstName || ""} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300" placeholder="John Wick" autoComplete="displayName" required autoFocus pattern=".*\S+.*" title="Display name is required" disabled spellCheck="false" />
+                            {/* <button type="button" className="absolute top-[9px] right-4 text-sm text-gray-600 hover:text-cyan-600" onClick={() => setDisplayNameDisabled(false)}>
+                                Change
+                            </button> */}
                         </div>
                     </label>
 
                     <label>
-                        <span className="text-sm font-medium text-white">Password</span>
+                        <span className="block text-sm font-medium text-white">Password</span>
                         <input type="password" name="password" value={formData.password} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300" placeholder="JohnWick@123" autoComplete="current-password" required minLength="8" disabled />
                     </label>
 
                     <label>
-                        <span className="text-sm font-medium text-white">Confirm Password</span>
+                        <span className="block text-sm font-medium text-white">Confirm Password</span>
                         <input
                             className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300"
                             name="confirmPassword"

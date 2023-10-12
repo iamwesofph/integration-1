@@ -102,7 +102,9 @@ function DropdownMenu({ user, handleClickOutside, dropdownRef, setNotification, 
             ref={dropdownRef}
         >
             <div className="flex flex-col items-center gap-6 py-6">
-                <div>{user.profilePhoto ? <img className="rounded-full h-14 w-14 object-cover border border-white" src={user.profilePhoto} alt="profile photo" referrerPolicy="no-referrer" /> : <CogIcon className="w-6 h-6 fill-current m-3" />}</div>
+                <div>{user.profilePhoto ? <img className="rounded-full h-14 w-14 object-cover border border-white" src={`${user.profilePhoto}?${new Date().getTime()}`} alt="profile photo" referrerPolicy="no-referrer" /> : <CogIcon className="w-6 h-6 fill-current m-3" />}</div>
+                {/* src={`${user.profilePhoto}?${new Date().getTime()}`}  */}
+                {/* This is a hacky technique to prevent cache related error */}
                 <div className="flex flex-col items-center justify-center">
                     <span className="text-lg font-bold">{user.firstName || user.displayName}</span>
                     <h3 className="text-xs">{user.email}</h3>

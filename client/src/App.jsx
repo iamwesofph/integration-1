@@ -28,8 +28,7 @@ function App() {
             // console.log("USEEFFECT OAUTH");
             try {
                 // const url = `${import.meta.env.VITE_SERVER_URL}/auth/login/success`;
-                const url = `/auth/login/success`;
-                const { data } = await axios.get(url, { withCredentials: true });
+                const { data } = await axios.get("/auth/login/success", { withCredentials: true });
                 // console.log(data.user);
                 setUser(data.user);
                 setNotification({ message: "Login successful!", type: "success" });

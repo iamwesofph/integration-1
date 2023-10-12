@@ -31,11 +31,14 @@ const ProfilePhotoUpload = ({ setNotification, user, profilePhoto }) => {
     const handleImageUpload = async (event) => {
         // Display uploaded image to the DOM
         const files = event.target.files;
-        if (files.length === 0) {
-            // User canceled the file selection, do nothing or show a message
-            console.log("File upload canceled.");
-            return;
-        }
+
+        //NO need because onclick event handles reset of value of input field
+        // if (files.length === 0) {
+        //     // User canceled the file selection, do nothing or show a message
+        //     console.log("File upload canceled.");
+        //     return;
+        // }
+
         const file = files[0];
         let imageURL;
         try {
@@ -56,22 +59,23 @@ const ProfilePhotoUpload = ({ setNotification, user, profilePhoto }) => {
                 // Save the new profile photo to the file storage
                 const response = await axios.post("/api/profile", form);
                 //TODO Delete the old profile photo from the file storage
-                // Save the new profile photo's URL to the DB
-                // console.log(`RESPONSE ${JSON.stringify(response)}`);
-                // console.log(response.data.filename);
-                const loggedUserToken = window.localStorage.getItem("loggedUserToken");
 
-                if (loggedUserToken) {
-                    console.log();
-                    const headerConfig = {
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${loggedUserToken}`,
-                        },
-                    };
-                    const userData = await userService.update(user.id, { profilePhoto: `http://localhost:3001/static/${response.data.filename}` }, headerConfig);
-                    console.log(userData);
-                }
+                // Save the new profile photo's URL to the DB but re-authenticate first/
+                // const loggedUserToken = window.localStorage.getItem("loggedUserToken");
+
+                // if (loggedUserToken) {
+                //     console.log();
+                //     const headerConfig = {
+                //         headers: {
+                //             "Content-Type": "application/json",
+                //             Authorization: `Bearer ${loggedUserToken}`,
+                //         },
+                //     };
+                // const userData = await userService.update(user.id, { profilePhoto: `http://localhost:3001/static/${response.data.filename}` }, headerConfig);
+                // console.log(userData);
+                // }
+                const userData = await userService.update(user.id, { profilePhoto: `http://localhost:3001/static/${response.data.filename}` });
+                console.log(userData);
 
                 setNotification({ message: "Your profile picture has been updated", type: "success" });
                 setTimeout(() => {
@@ -85,12 +89,25 @@ const ProfilePhotoUpload = ({ setNotification, user, profilePhoto }) => {
         }
     };
 
-    const handleImageRemove = () => {
+    const handleImageRemove = async () => {
         const text = "Are you sure you want to reset your current avatar?";
         if (confirm(text) === true) {
             setSelectedImage(null);
             try {
                 //TODO Delete the old profile photo from the file storage
+                const loggedUserToken = window.localStorage.getItem("loggedUserToken");
+
+                if (loggedUserToken) {
+                    console.log();
+                    const headerConfig = {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${loggedUserToken}`,
+                        },
+                    };
+                    const userData = await userService.update(user.id, { profilePhoto: null }, headerConfig);
+                    console.log(userData);
+                }
                 setNotification({ message: "Your profile picture has been removed", type: "success" });
                 setTimeout(() => {
                     setNotification(null);
@@ -103,11 +120,16 @@ const ProfilePhotoUpload = ({ setNotification, user, profilePhoto }) => {
         }
     };
 
+    const onInputClick = (event) => {
+        event.target.value = "";
+    };
+
     return (
         <>
             <details className="relative">
                 <summary className="list-none" aria-haspopup="menu" role="button">
-                    <img className="rounded-full overflow-hidden inline-block border-none w-52 h-52 object-cover" src={selectedImage ? selectedImage : noProfilePhoto} alt="@iamwesofph" />
+                    {/* <img className="rounded-full overflow-hidden inline-block border-none w-52 h-52 object-cover" src={selectedImage ? selectedImage : noProfilePhoto} alt="@iamwesofph" /> */}
+                    <img className="rounded-full overflow-hidden inline-block border-none w-52 h-52 object-cover" src={selectedImage || noProfilePhoto} alt="@iamwesofph" />
 
                     <div className="relative w-16 left-0 bottom-10 bg-gray-800 rounded-md fill-current text-sm px-2 py-1 mb-2 border border-gray-500">
                         <div className="flex justify-around items-center">
@@ -117,12 +139,12 @@ const ProfilePhotoUpload = ({ setNotification, user, profilePhoto }) => {
                     </div>
                 </summary>
 
-                <div className="rounded-md absolute bottom-36 translate-y-full" role="menu">
+                <div className="rounded-md absolute bottom-10 translate-y-full" role="menu">
                     <div className="rounded-md flex flex-col items-start border border-gray-500 bg-gray-800 overflow-hidden">
                         <form encType="multipart/form-data" className="flex">
                             <label htmlFor="upload_photo" className="select-none whitespace-nowrap text-sm cursor-pointer w-full text-left px-4 py-2 hover:bg-cyan-400 hover:text-slate-700" tabIndex="1">
                                 Upload a photo…
-                                <input name="image" className="hidden" type="file" id="upload_photo" accept="image/*" onChange={handleImageUpload} />
+                                <input name="image" className="hidden" type="file" id="upload_photo" accept="image/*" onChange={handleImageUpload} onClick={onInputClick} />
                             </label>
                             {/* <button type="button" className="absolute -bottom-20 hover:bg-cyan-400 w-20 h-10 select-none border border-white whitespace-nowrap text-sm cursor-pointer text-left px-4 py-2 hover-bg-cyan-400 hover-text-slate-700" onClick={uploadImage}>
                                 Submit
