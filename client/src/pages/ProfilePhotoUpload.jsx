@@ -3,8 +3,9 @@ import noProfilePhoto from "../icons/noprofile.jpg";
 import EditPen from "../icons/editPen.svg?react";
 import axios from "axios";
 import FormData from "form-data";
+import userService from "../services/users";
 
-const ProfilePhotoUpload = ({ setNotification, profilePhoto }) => {
+const ProfilePhotoUpload = ({ setNotification, user, profilePhoto }) => {
     const [selectedImage, setSelectedImage] = useState(null);
 
     // async function uploadImage() {
@@ -36,8 +37,10 @@ const ProfilePhotoUpload = ({ setNotification, profilePhoto }) => {
             return;
         }
         const file = files[0];
+        let imageURL;
         try {
-            setSelectedImage(URL.createObjectURL(file));
+            imageURL = URL.createObjectURL(file);
+            setSelectedImage(imageURL);
             URL.revokeObjectURL(selectedImage);
         } catch (error) {
             console.error("Error creating object URL:", error);
@@ -51,9 +54,25 @@ const ProfilePhotoUpload = ({ setNotification, profilePhoto }) => {
             try {
                 form.append("image", file, "image.jpg");
                 // Save the new profile photo to the file storage
-                const response = await axios.post("/api/profile", form, { headers: { "Content-Type": "multipart/form-data" } });
+                const response = await axios.post("/api/profile", form);
                 //TODO Delete the old profile photo from the file storage
-                console.log(response.data);
+                // Save the new profile photo's URL to the DB
+                // console.log(`RESPONSE ${JSON.stringify(response)}`);
+                // console.log(response.data.filename);
+                const loggedUserToken = window.localStorage.getItem("loggedUserToken");
+
+                if (loggedUserToken) {
+                    console.log();
+                    const headerConfig = {
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${loggedUserToken}`,
+                        },
+                    };
+                    const userData = await userService.update(user.id, { profilePhoto: `http://localhost:3001/static/${response.data.filename}` }, headerConfig);
+                    console.log(userData);
+                }
+
                 setNotification({ message: "Your profile picture has been updated", type: "success" });
                 setTimeout(() => {
                     setNotification(null);

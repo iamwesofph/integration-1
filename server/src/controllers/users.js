@@ -94,6 +94,7 @@ usersRouter.put("/api/users/:id", (request, response, next) => {
 
     const user = {
         displayName: body.displayName,
+        profilePhoto: body.profilePhoto,
     };
 
     User.findByIdAndUpdate(request.params.id, user, { new: true })

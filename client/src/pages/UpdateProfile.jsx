@@ -64,7 +64,7 @@ const UpdateProfile = ({ user, setNotification, setUser }) => {
         <>
             <h2 className="text-2xl mb-8 text-white text-center">Update Profile</h2>
             <div className="flex justify-around">
-                <ProfilePhotoUpload profilePhoto={formData.profilePhoto} setNotification={setNotification} />
+                {user && <ProfilePhotoUpload user={user} profilePhoto={user.profilePhoto} setNotification={setNotification} />}
                 <form className="sm:w-[400px] mx-auto h-40" onSubmit={handleSubmit}>
                     <label>
                         <span className="block text-sm font-medium text-white">Email Address</span>
@@ -75,7 +75,7 @@ const UpdateProfile = ({ user, setNotification, setUser }) => {
                         <span className="block text-sm font-medium text-white">Display Name</span>
                         <div className="relative">
                             <input type="text" name="displayName" value={formData.displayName} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300" placeholder="John Wick" autoComplete="displayName" required autoFocus pattern=".*\S+.*" title="Display name is required" disabled={displayNameDisabled} spellCheck="false" />
-                            <button type="button" className="absolute top-[9px] right-4 text-sm text-gray-600" onClick={() => setDisplayNameDisabled(false)}>
+                            <button type="button" className="absolute top-[9px] right-4 text-sm text-gray-600 hover:text-cyan-600" onClick={() => setDisplayNameDisabled(false)}>
                                 Change
                             </button>
                         </div>
