@@ -40,7 +40,7 @@ Accept: application/json, text/plain, */*
 Accept-Encoding: gzip, deflate, br
 Accept-Language: en-US,en;q=0.9
 Connection: keep-alive
-Cookie: connect.sid=s%3AVtdU-hV9Gy0O1Z7S25zhI_w6ds1Ec1HD.imSibpDmxwfOU%2FJDO17SrTkB5uES%2FVKZl2uB5TsAhw8
+Cookie: connect.sid=s%3AxGOwTNXloAvD-s7zTMozFyr211LVEEZE.ZghAF30XkkwvbELAhDi2FdtdgguPD1lHPTwO2%2BRMRZ8
 Host: localhost:3001
 Origin: http://localhost:5173
 Referer: http://localhost:5173/
@@ -112,7 +112,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZ
 }
 ###
 GET http://localhost:3001/api/login-local/success
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MWQ0Y2ViZjNhZDU0MTMwYTE1MzU4YiIsImlhdCI6MTY5NjQ3OTI0OCwiZXhwIjoxNjk2NDgyODQ4fQ.7r50zQFjpBv1kkvLNE3iMToKrrJoSsohSLTmmSoQ5Hc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MjRjN2UxMzZmYTVjOTBjMzQ4YzAxOSIsImlhdCI6MTY5NzA3OTAwOCwiZXhwIjoxNjk3MDgyNjA4fQ.RDmo00uG5jOIP2v2_LpNExX6yhjJh8z-b72tWlnABFo
 
 ###
 GET http://localhost:3001/api/verify-email/?token=$2b$10$bGdf1GZ6JfSZrFyRVceWueHYE7qHYAfjsGezPkQuU/I.OFEBdNbf6
@@ -150,7 +150,7 @@ PUT http://localhost:3001/api/users/6524c7e136fa5c90c348c019
 content-type: application/json
 
 {
-    "displayName":"Vincen21zo"
+    "displayName":"Vincen21zo",
     "profilePhoto":"http://localhost:3001/static/bank.jpg"
 }
 
@@ -217,3 +217,11 @@ User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 sec-ch-ua: "Brave";v="117", "Not;A=Brand";v="8", "Chromium";v="117"
 sec-ch-ua-mobile: ?0
 sec-ch-ua-platform: "Windows"
+
+###
+POST http://localhost:3001/api/profile-delete
+content-type: application/json
+
+{
+    "filePath": "uploads/image-1697105229252-520621196.jpg"
+}

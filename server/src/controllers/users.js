@@ -9,6 +9,8 @@ const { validateRequestSchema, userExtractor } = require("../utils/middleware");
 const multer = require("multer");
 const path = require("path");
 
+const fs = require("fs");
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "uploads");
@@ -22,11 +24,21 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 usersRouter.post("/api/profile", upload.single("image"), function (req, res, next) {
-    // req.file is the `avatar` file
-    // req.body will hold the text fields, if there were any
     console.log(`FILE UPLOADED: ${req.file}`);
-    // res.send("Image Uploaded");
     res.status(200).json(req.file);
+});
+
+usersRouter.post("/api/profile-delete", function (req, res, next) {
+    const filePath = req.body.filePath;
+    console.log(req.body.filePath);
+    if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        console.log(`File ${filePath} has been deleted.`);
+        res.status(200).send(`File ${filePath} has been deleted.`);
+    } else {
+        console.log(`File ${filePath} does not exist.`);
+        res.status(200).send(`File ${filePath} does not exist.`);
+    }
 });
 
 usersRouter.post(

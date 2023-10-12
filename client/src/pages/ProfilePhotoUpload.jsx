@@ -58,7 +58,6 @@ const ProfilePhotoUpload = ({ setNotification, user, profilePhoto }) => {
                 form.append("image", file, "image.jpg");
                 // Save the new profile photo to the file storage
                 const response = await axios.post("/api/profile", form);
-                //TODO Delete the old profile photo from the file storage
 
                 // Save the new profile photo's URL to the DB but re-authenticate first/
                 // const loggedUserToken = window.localStorage.getItem("loggedUserToken");
@@ -93,7 +92,25 @@ const ProfilePhotoUpload = ({ setNotification, user, profilePhoto }) => {
         const text = "Are you sure you want to reset your current avatar?";
         if (confirm(text) === true) {
             setSelectedImage(null);
+
             try {
+                const parts = user.profilePhoto.split("/static/"); // Split the URL at "/static/"
+                let partAfterStatic;
+                if (parts.length === 2) {
+                    partAfterStatic = parts[1]; // Get the part after "static/"
+                    console.log(partAfterStatic);
+                } else {
+                    console.log("URL format is not as expected.");
+                }
+
+                const filename = partAfterStatic;
+                //TODO Convert to .env file instead of hardcoded folder path
+                const filePath = `uploads/${filename}`;
+                console.log(`FILEPATH ${filePath}`);
+                //TODO Delete the old profile photo from the file storage
+                const response = await axios.post("/api/profile-delete", { filePath: filePath });
+                console.log(response);
+
                 const userData = await userService.update(user.id, { profilePhoto: null });
                 console.log(userData);
                 setNotification({ message: "Your profile picture has been removed", type: "success" });
