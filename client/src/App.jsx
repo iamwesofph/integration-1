@@ -133,7 +133,7 @@ function App() {
                 <Route path="signup" element={<SignupForm setNotification={setNotification} />}></Route>
                 <Route path="verification-successful" element={<VerificationSuccessful />}></Route>
                 <Route path="verification-nothing" element={<VerificationNothing />}></Route>
-                <Route path="update-profile" element={<UpdateProfile user={user} setNotification={setNotification} />}></Route>
+                <Route path="update-profile" element={<UpdateProfile user={user} setUser={setUser} setNotification={setNotification} />}></Route>
                 <Route path="*" element={<NotFound />} />
             </Route>
         )

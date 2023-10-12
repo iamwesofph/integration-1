@@ -90,7 +90,7 @@ function DropdownMenu({ user, handleClickOutside, dropdownRef, setNotification, 
 
     return (
         <motion.div
-            className="h-auto w-72 absolute right-0 flex flex-col border border-cyan-400 bg-gray-800 rounded-lg text-sm"
+            className="h-auto w-72 absolute right-0 flex flex-col border border-cyan-400 bg-gray-800 rounded-lg text-sm z-50"
             // initial={{ opacity: 0, scale: 0.3, x: 50, y: -150 }}
             // animate={{ opacity: 1, scale: 1, x: -22, y: 20 }}
             // exit={{ opacity: 0, scale: 0.3, x: 50, y: -150 }} // Define the exit animation

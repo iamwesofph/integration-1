@@ -4,7 +4,7 @@ const { body } = require("express-validator");
 
 const User = require("../models/user");
 const config = require("../utils/config");
-const { validateRequestSchema } = require("../utils/middleware");
+const { validateRequestSchema, userExtractor } = require("../utils/middleware");
 
 const multer = require("multer");
 const path = require("path");
@@ -87,6 +87,20 @@ usersRouter.get("/api/verify-email", async (req, res) => {
         res.redirect(`${config.FRONTEND_URL}/verification-successful`);
     }
     // res.status(200).json(`${user.email} is now verified`);
+});
+
+usersRouter.put("/api/users/:id", (request, response, next) => {
+    const body = request.body;
+
+    const user = {
+        displayName: body.displayName,
+    };
+
+    User.findByIdAndUpdate(request.params.id, user, { new: true })
+        .then((updatedUser) => {
+            response.json(updatedUser);
+        })
+        .catch((error) => next(error));
 });
 
 module.exports = usersRouter;

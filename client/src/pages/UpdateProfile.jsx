@@ -4,10 +4,9 @@ import { useNavigate } from "react-router-dom";
 import Spinner from "../icons/spinner.svg?react";
 import ProfilePhotoUpload from "./ProfilePhotoUpload";
 
-const UpdateProfile = ({ user, setNotification }) => {
+const UpdateProfile = ({ user, setNotification, setUser }) => {
     const navigate = useNavigate();
-
-    const [isDisabled, setIsDisabled] = useState(false);
+    const [displayNameDisabled, setDisplayNameDisabled] = useState(true);
     const [formData, setFormData] = useState({
         displayName: "",
         email: "",
@@ -22,6 +21,7 @@ const UpdateProfile = ({ user, setNotification }) => {
             setFormData({
                 displayName: user.displayName,
                 email: user.email,
+                profilePhoto: user.profilePhoto,
             });
         }
     }, [user]);
@@ -39,21 +39,20 @@ const UpdateProfile = ({ user, setNotification }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setIsDisabled(true);
-
+        setDisplayNameDisabled(true);
         try {
-            await userService.create(formData);
-            setNotification({ message: `You're signed up as ${formData.displayName}!  Redirecting to login page...`, type: "success" });
+            const userData = await userService.update(user.id, formData);
+            console.log(`USERDATA: ${JSON.stringify(userData)}`);
+            // if DB was successfully updated then update the state also
+            setUser(userData);
+            setNotification({ message: `User profile updated`, type: "success" });
             setTimeout(() => {
                 setNotification(null);
-                navigate("/login");
-                navigate(0);
             }, 5000);
         } catch (error) {
             if (error.response.data.error) {
                 const firstError = error.response.data.error;
                 setNotification({ message: firstError, type: "error" });
-                setIsDisabled(false);
                 setTimeout(() => {
                     setNotification(null);
                 }, 5000);
@@ -65,8 +64,8 @@ const UpdateProfile = ({ user, setNotification }) => {
         <>
             <h2 className="text-2xl mb-8 text-white text-center">Update Profile</h2>
             <div className="flex justify-around">
-                <ProfilePhotoUpload setNotification={setNotification} />
-                <form className="sm:w-[400px] mx-auto" onSubmit={handleSubmit}>
+                <ProfilePhotoUpload profilePhoto={formData.profilePhoto} setNotification={setNotification} />
+                <form className="sm:w-[400px] mx-auto h-40" onSubmit={handleSubmit}>
                     <label>
                         <span className="block text-sm font-medium text-white">Email Address</span>
                         <input type="text" name="email" value={formData.email} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300 " placeholder="john@example.com" required disabled />
@@ -74,16 +73,21 @@ const UpdateProfile = ({ user, setNotification }) => {
 
                     <label>
                         <span className="block text-sm font-medium text-white">Display Name</span>
-                        <input type="text" name="displayName" value={formData.displayName} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300" placeholder="John Wick" autoComplete="displayName" required autoFocus pattern=".*\S+.*" title="Display name is required" disabled={isDisabled} spellcheck="false" />
+                        <div className="relative">
+                            <input type="text" name="displayName" value={formData.displayName} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300" placeholder="John Wick" autoComplete="displayName" required autoFocus pattern=".*\S+.*" title="Display name is required" disabled={displayNameDisabled} spellCheck="false" />
+                            <button type="button" className="absolute top-[9px] right-4 text-sm text-gray-600" onClick={() => setDisplayNameDisabled(false)}>
+                                Change
+                            </button>
+                        </div>
                     </label>
 
                     <label>
-                        <span className="block text-sm font-medium text-white">Password</span>
-                        <input type="password" name="password" value={formData.password} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300" placeholder="JohnWick@123" autoComplete="current-password" required minLength="8" disabled={isDisabled} />
+                        <span className="text-sm font-medium text-white">Password</span>
+                        <input type="password" name="password" value={formData.password} onChange={handleChange} className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1  valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300" placeholder="JohnWick@123" autoComplete="current-password" required minLength="8" disabled />
                     </label>
 
                     <label>
-                        <span className="block text-sm font-medium text-white">Confirm Password</span>
+                        <span className="text-sm font-medium text-white">Confirm Password</span>
                         <input
                             className="mt-1 mb-2 px-3 py-2 bg-white text-black border-2 shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 valid:border-green-400 disabled:bg-gray-200 disabled:text-gray-500 disabled:border-gray-300"
                             name="confirmPassword"
@@ -92,22 +96,15 @@ const UpdateProfile = ({ user, setNotification }) => {
                             required
                             pattern={`^${formData.password}$`} // Use a regular expression to match the password
                             title="Passwords must match" // Custom error message
-                            disabled={isDisabled}
+                            disabled
                         />
                     </label>
 
-                    {isDisabled ? (
-                        <button disabled className="flex items-center bg-cyan-400 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded focus:outline-none mr-2" type="submit">
-                            <Spinner />
-                            Redirecting...
+                    <div className="flex justify-end">
+                        <button className="bg-cyan-400 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded focus:outline-none mt-4" type="submit">
+                            Update
                         </button>
-                    ) : (
-                        <div className="flex justify-end">
-                            <button className="bg-cyan-400 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded focus:outline-none mt-4" type="submit">
-                                Update
-                            </button>
-                        </div>
-                    )}
+                    </div>
                 </form>
             </div>
         </>

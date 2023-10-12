@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import noProfilePhoto from "../icons/noprofile.jpg";
 import EditPen from "../icons/editPen.svg?react";
 import axios from "axios";
 import FormData from "form-data";
 
-const ProfilePhotoUpload = ({ setNotification }) => {
+const ProfilePhotoUpload = ({ setNotification, profilePhoto }) => {
     const [selectedImage, setSelectedImage] = useState(null);
 
     // async function uploadImage() {
@@ -22,6 +22,10 @@ const ProfilePhotoUpload = ({ setNotification }) => {
     //         console.error("Failure", error);
     //     }
     // }
+
+    useEffect(() => {
+        setSelectedImage(profilePhoto);
+    }, [profilePhoto]);
 
     const handleImageUpload = async (event) => {
         // Display uploaded image to the DOM
